@@ -17,6 +17,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
     EMAIL_PRIMARY: initialConfig.EMAIL_PRIMARY || initialConfig.emailPrimary || "[REPLACE WITH BUSINESS EMAIL]",
     EMAIL_SALES: initialConfig.EMAIL_SALES || initialConfig.emailSales || "[REPLACE WITH SALES EMAIL]",
     ADDRESS: initialConfig.ADDRESS || initialConfig.address || "[REPLACE WITH FACTORY ADDRESS]",
+    GSTIN: initialConfig.GSTIN || initialConfig.gstin || "[REPLACE WITH GSTIN]",
     GOOGLE_MAPS_URL: initialConfig.GOOGLE_MAPS_URL || initialConfig.googleMapsUrl || "[REPLACE WITH GOOGLE MAPS EMBED URL]",
     BUSINESS_HOURS: initialConfig.BUSINESS_HOURS || initialConfig.businessHours || "[REPLACE WITH BUSINESS HOURS]",
     FACEBOOK_URL: initialConfig.FACEBOOK_URL || initialConfig.facebookUrl || "[REPLACE WITH FACEBOOK URL]",
@@ -155,6 +156,16 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.EMAIL_PRIMARY}
                 onChange={(e) => handleChange("EMAIL_PRIMARY", e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+              />
+            </div>
+
+            <div>
+              <label className="block font-bold text-gray-300 mb-1">GSTIN</label>
+              <input
+                type="text"
+                value={formData.GSTIN}
+                onChange={(e) => handleChange("GSTIN", e.target.value)}
                 className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
               />
             </div>

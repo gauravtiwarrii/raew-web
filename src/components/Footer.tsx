@@ -13,6 +13,7 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
   const cleanPhone = config.phonePrimary.split("[")[0].trim() || config.phonePrimary;
   const cleanEmail = config.emailPrimary.split("[")[0].trim() || config.emailPrimary;
   const cleanAddress = config.address.split("[")[0].trim() || config.address;
+  const cleanGstin = (config.gstin || "").split("[")[0].trim();
   const whatsAppHref = getWhatsAppLink(undefined, undefined, config.whatsappNumber);
 
   return (
@@ -133,6 +134,14 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
               <MapPin className="w-4 h-4 text-emerald-500 mt-1 shrink-0" />
               <span>{cleanAddress}</span>
             </div>
+            {cleanGstin && (
+              <div className="flex items-center space-x-2.5">
+                <span className="w-4 h-4 shrink-0 text-emerald-500 font-bold text-[10px] leading-4 text-center">
+                  ID
+                </span>
+                <span>GSTIN: {cleanGstin}</span>
+              </div>
+            )}
             <div className="flex items-center space-x-2.5">
               <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
               <span>{cleanPhone}</span>

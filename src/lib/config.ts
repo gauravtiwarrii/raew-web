@@ -7,6 +7,7 @@ export interface SiteConfig {
   emailPrimary: string;
   emailSales: string;
   address: string;
+  gstin: string;
   googleMapsUrl: string;
   businessHours: string;
   establishedYear: string;
@@ -18,12 +19,15 @@ export interface SiteConfig {
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
   businessName: process.env.NEXT_PUBLIC_BUSINESS_NAME || "M/s Raj Agro Engineering Works",
   tagline: "Precision Agricultural Machinery & Heavy Custom Engineering Solutions",
-  phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "[REPLACE WITH ACTUAL BUSINESS PHONE]",
+  phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "9794427644",
   phoneSecondary: "[REPLACE WITH SECONDARY PHONE]",
-  whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "[REPLACE WITH ACTUAL WHATSAPP NUMBER]",
-  emailPrimary: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || "[REPLACE WITH BUSINESS EMAIL]",
+  whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "919794427644",
+  emailPrimary: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || "info@raew.in",
   emailSales: "[REPLACE WITH SALES EMAIL]",
-  address: process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || "[REPLACE WITH FACTORY ADDRESS]",
+  address:
+    process.env.NEXT_PUBLIC_BUSINESS_ADDRESS ||
+    "Madawa Newada, Post- Rehi, Mirzapur, Uttar Pradesh, India - 231211",
+  gstin: process.env.NEXT_PUBLIC_BUSINESS_GSTIN || "09BAZPT1519D1Z8",
   googleMapsUrl: "[REPLACE WITH GOOGLE MAPS EMBED URL]",
   businessHours: "[REPLACE WITH BUSINESS HOURS]",
   establishedYear: "[REPLACE WITH ESTABLISHED YEAR OR LEAVE BLANK]",
