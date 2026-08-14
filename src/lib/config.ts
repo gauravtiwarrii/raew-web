@@ -19,7 +19,7 @@ export interface SiteConfig {
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
   businessName: process.env.NEXT_PUBLIC_BUSINESS_NAME || "M/s Raj Agro Engineering Works",
   tagline: "Precision Agricultural Machinery & Heavy Custom Engineering Solutions",
-  phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "9794427644",
+  phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+91 7651861335",
   phoneSecondary: "[REPLACE WITH SECONDARY PHONE]",
   whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "919794427644",
   emailPrimary: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || "info@raew.in",

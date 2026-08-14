@@ -24,7 +24,7 @@ async function main() {
   const settings = [
     { key: "BUSINESS_NAME", value: "M/s Raj Agro Engineering Works", group: "GENERAL" },
     { key: "TAGLINE", value: "Precision Agricultural Machinery & Custom Engineering Solutions", group: "GENERAL" },
-    { key: "PHONE_PRIMARY", value: "9794427644", group: "CONTACT" },
+    { key: "PHONE_PRIMARY", value: "+91 7651861335", group: "CONTACT" },
     { key: "PHONE_SECONDARY", value: "[REPLACE WITH SECONDARY PHONE]", group: "CONTACT" },
     { key: "WHATSAPP_NUMBER", value: "919794427644", group: "CONTACT" },
     { key: "EMAIL_PRIMARY", value: "info@raew.in", group: "CONTACT" },

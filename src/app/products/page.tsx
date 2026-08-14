@@ -24,34 +24,41 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const categorySlug = params.category || "";
   const sort = params.sort || "newest";
 
-  const categories = await prisma.category.findMany({
-    where: { active: true },
-    orderBy: { sortOrder: "asc" },
-  });
+  let categories: any[] = [];
+  let products: any[] = [];
 
-  const whereClause: any = { active: true };
+  try {
+    categories = await prisma.category.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    });
 
-  if (categorySlug) {
-    whereClause.category = { slug: categorySlug };
+    const whereClause: any = { active: true };
+
+    if (categorySlug) {
+      whereClause.category = { slug: categorySlug };
+    }
+
+    if (search) {
+      whereClause.OR = [
+        { name: { contains: search } },
+        { shortDescription: { contains: search } },
+        { description: { contains: search } },
+      ];
+    }
+
+    let orderBy: any = { createdAt: "desc" };
+    if (sort === "name-asc") orderBy = { name: "asc" };
+    if (sort === "name-desc") orderBy = { name: "desc" };
+
+    products = await prisma.product.findMany({
+      where: whereClause,
+      include: { category: true },
+      orderBy,
+    });
+  } catch (error) {
+    console.error("Products page data fetch error:", error);
   }
-
-  if (search) {
-    whereClause.OR = [
-      { name: { contains: search } },
-      { shortDescription: { contains: search } },
-      { description: { contains: search } },
-    ];
-  }
-
-  let orderBy: any = { createdAt: "desc" };
-  if (sort === "name-asc") orderBy = { name: "asc" };
-  if (sort === "name-desc") orderBy = { name: "desc" };
-
-  const products = await prisma.product.findMany({
-    where: whereClause,
-    include: { category: true },
-    orderBy,
-  });
 
   return (
     <div className="space-y-10 py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

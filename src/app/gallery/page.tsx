@@ -9,10 +9,15 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function GalleryPage() {
-  const items = await prisma.galleryItem.findMany({
-    where: { active: true },
-    orderBy: { createdAt: "desc" },
-  });
+  let items: any[] = [];
+  try {
+    items = await prisma.galleryItem.findMany({
+      where: { active: true },
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Gallery page data fetch error:", error);
+  }
 
   return <GalleryClient initialItems={items} />;
 }

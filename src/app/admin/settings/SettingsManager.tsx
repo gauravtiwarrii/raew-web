@@ -11,7 +11,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
   const [formData, setFormData] = useState<Record<string, string>>({
     BUSINESS_NAME: initialConfig.BUSINESS_NAME || initialConfig.businessName || "M/s Raj Agro Engineering Works",
     TAGLINE: initialConfig.TAGLINE || initialConfig.tagline || "Precision Agricultural Machinery Solutions",
-    PHONE_PRIMARY: initialConfig.PHONE_PRIMARY || initialConfig.phonePrimary || "9794427644",
+    PHONE_PRIMARY: initialConfig.PHONE_PRIMARY || initialConfig.phonePrimary || "+91 7651861335",
     PHONE_SECONDARY: initialConfig.PHONE_SECONDARY || initialConfig.phoneSecondary || "[REPLACE WITH SECONDARY PHONE]",
     WHATSAPP_NUMBER: initialConfig.WHATSAPP_NUMBER || initialConfig.whatsappNumber || "919794427644",
     EMAIL_PRIMARY: initialConfig.EMAIL_PRIMARY || initialConfig.emailPrimary || "info@raew.in",

@@ -18,11 +18,17 @@ interface QuotePageProps {
 export default async function QuotePage({ searchParams }: QuotePageProps) {
   const params = await searchParams;
   const config = await getSiteConfig();
-  const products = await prisma.product.findMany({
-    where: { active: true },
-    select: { id: true, name: true },
-    orderBy: { name: "asc" },
-  });
+
+  let products: { id: string; name: string }[] = [];
+  try {
+    products = await prisma.product.findMany({
+      where: { active: true },
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    });
+  } catch (error) {
+    console.error("Quote page: failed to fetch products:", error);
+  }
 
   return (
     <QuoteClient

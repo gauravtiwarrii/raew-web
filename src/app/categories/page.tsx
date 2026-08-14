@@ -11,15 +11,20 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function CategoriesPage() {
-  const categories = await prisma.category.findMany({
-    where: { active: true },
-    include: {
-      _count: {
-        select: { products: true },
+  let categories: any[] = [];
+  try {
+    categories = await prisma.category.findMany({
+      where: { active: true },
+      include: {
+        _count: {
+          select: { products: true },
+        },
       },
-    },
-    orderBy: { sortOrder: "asc" },
-  });
+      orderBy: { sortOrder: "asc" },
+    });
+  } catch (error) {
+    console.error("Categories page data fetch error:", error);
+  }
 
   return (
     <div className="space-y-10 py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

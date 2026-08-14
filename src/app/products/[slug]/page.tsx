@@ -23,32 +23,42 @@ interface ProductDetailPageProps {
 
 export async function generateMetadata({ params }: ProductDetailPageProps) {
   const { slug } = await params;
-  const product = await prisma.product.findFirst({
-    where: { OR: [{ slug: slug }, { id: slug }] },
-    include: { category: true },
-  });
+  try {
+    const product = await prisma.product.findFirst({
+      where: { OR: [{ slug: slug }, { id: slug }] },
+      include: { category: true },
+    });
 
-  if (!product) return { title: "Product Not Found" };
+    if (!product) return { title: "Product Not Found" };
 
-  return {
-    title: `${product.name} | M/s Raj Agro Engineering Works`,
-    description: product.shortDescription,
-    openGraph: {
-      title: product.name,
+    return {
+      title: `${product.name} | M/s Raj Agro Engineering Works`,
       description: product.shortDescription,
-      images: [product.image],
-    },
-  };
+      openGraph: {
+        title: product.name,
+        description: product.shortDescription,
+        images: [product.image],
+      },
+    };
+  } catch (error) {
+    console.error("Product metadata fetch error:", error);
+    return { title: "Product Not Found" };
+  }
 }
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { slug } = await params;
   const config = await getSiteConfig();
 
-  const product = await prisma.product.findFirst({
-    where: { OR: [{ slug: slug }, { id: slug }] },
-    include: { category: true },
-  });
+  let product: any = null;
+  try {
+    product = await prisma.product.findFirst({
+      where: { OR: [{ slug: slug }, { id: slug }] },
+      include: { category: true },
+    });
+  } catch (error) {
+    console.error("Product detail fetch error:", error);
+  }
 
   if (!product) {
     notFound();
@@ -85,15 +95,20 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   }
 
   // Fetch related products in same category
-  const relatedProducts = await prisma.product.findMany({
-    where: {
-      categoryId: product.categoryId,
-      id: { not: product.id },
-      active: true,
-    },
-    include: { category: true },
-    take: 3,
-  });
+  let relatedProducts: any[] = [];
+  try {
+    relatedProducts = await prisma.product.findMany({
+      where: {
+        categoryId: product.categoryId,
+        id: { not: product.id },
+        active: true,
+      },
+      include: { category: true },
+      take: 3,
+    });
+  } catch (error) {
+    console.error("Related products fetch error:", error);
+  }
 
   const waUrl = getWhatsAppLink(product.name, undefined, config.whatsappNumber);
 
