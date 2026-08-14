@@ -25,7 +25,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
       initialConfig.GOOGLE_MAPS_URL ||
       initialConfig.googleMapsUrl ||
       "https://www.google.com/maps?q=Madawa+Newada%2C+Post-Rehi%2C+Mirzapur%2C+Uttar+Pradesh%2C+India+231211&output=embed",
-    BUSINESS_HOURS: initialConfig.BUSINESS_HOURS || initialConfig.businessHours || "[REPLACE WITH BUSINESS HOURS]",
+    BUSINESS_HOURS: initialConfig.BUSINESS_HOURS || initialConfig.businessHours || "24/7",
     FACEBOOK_URL: initialConfig.FACEBOOK_URL || initialConfig.facebookUrl || "[REPLACE WITH FACEBOOK URL]",
     INSTAGRAM_URL: initialConfig.INSTAGRAM_URL || initialConfig.instagramUrl || "[REPLACE WITH INSTAGRAM URL]",
     YOUTUBE_URL: initialConfig.YOUTUBE_URL || initialConfig.youtubeUrl || "[REPLACE WITH YOUTUBE URL]",

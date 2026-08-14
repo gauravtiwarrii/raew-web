@@ -18,7 +18,7 @@ export default function Header({
   phone = "9794427644",
   email = "info@raew.in",
   whatsapp = "919794427644",
-  businessHours = "[REPLACE WITH BUSINESS HOURS]",
+  businessHours = "24/7",
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

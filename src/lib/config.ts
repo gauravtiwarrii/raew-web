@@ -30,7 +30,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   gstin: process.env.NEXT_PUBLIC_BUSINESS_GSTIN || "09BAZPT1519D1Z8",
   googleMapsUrl:
     "https://www.google.com/maps?q=Madawa+Newada%2C+Post-Rehi%2C+Mirzapur%2C+Uttar+Pradesh%2C+India+231211&output=embed",
-  businessHours: "[REPLACE WITH BUSINESS HOURS]",
+  businessHours: process.env.NEXT_PUBLIC_BUSINESS_HOURS || "24/7",
   establishedYear: "[REPLACE WITH ESTABLISHED YEAR OR LEAVE BLANK]",
   facebookUrl: "[REPLACE WITH FACEBOOK URL]",
   instagramUrl: "[REPLACE WITH INSTAGRAM URL]",
