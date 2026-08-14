@@ -26,7 +26,7 @@ async function main() {
     { key: "TAGLINE", value: "Precision Agricultural Machinery & Custom Engineering Solutions", group: "GENERAL" },
     { key: "PHONE_PRIMARY", value: "+91 7651861335", group: "CONTACT" },
     { key: "PHONE_SECONDARY", value: "[REPLACE WITH SECONDARY PHONE]", group: "CONTACT" },
-    { key: "WHATSAPP_NUMBER", value: "919794427644", group: "CONTACT" },
+    { key: "WHATSAPP_NUMBER", value: "917651861335", group: "CONTACT" },
     { key: "EMAIL_PRIMARY", value: "info@raew.in", group: "CONTACT" },
     { key: "EMAIL_SALES", value: "[REPLACE WITH SALES EMAIL]", group: "CONTACT" },
     {

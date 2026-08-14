@@ -200,7 +200,7 @@ export default function QuoteClient({ products, initialProductTitle = "", whatsa
                 <input
                   type="tel"
                   {...register("phone")}
-                  placeholder="9794427644"
+                  placeholder="7651861335"
                   className="w-full px-3 py-2.5 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none"
                 />
                 {errors.phone && <p className="text-[11px] text-red-600 mt-0.5">{errors.phone.message}</p>}

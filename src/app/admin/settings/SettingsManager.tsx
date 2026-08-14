@@ -13,7 +13,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
     TAGLINE: initialConfig.TAGLINE || initialConfig.tagline || "Precision Agricultural Machinery Solutions",
     PHONE_PRIMARY: initialConfig.PHONE_PRIMARY || initialConfig.phonePrimary || "+91 7651861335",
     PHONE_SECONDARY: initialConfig.PHONE_SECONDARY || initialConfig.phoneSecondary || "[REPLACE WITH SECONDARY PHONE]",
-    WHATSAPP_NUMBER: initialConfig.WHATSAPP_NUMBER || initialConfig.whatsappNumber || "919794427644",
+    WHATSAPP_NUMBER: initialConfig.WHATSAPP_NUMBER || initialConfig.whatsappNumber || "917651861335",
     EMAIL_PRIMARY: initialConfig.EMAIL_PRIMARY || initialConfig.emailPrimary || "info@raew.in",
     EMAIL_SALES: initialConfig.EMAIL_SALES || initialConfig.emailSales || "[REPLACE WITH SALES EMAIL]",
     ADDRESS:

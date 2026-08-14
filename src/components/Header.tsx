@@ -18,7 +18,7 @@ interface HeaderProps {
 export default function Header({
   phone = "+91 7651861335",
   email = "info@raew.in",
-  whatsapp = "919794427644",
+  whatsapp = "917651861335",
   businessHours = "24/7",
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

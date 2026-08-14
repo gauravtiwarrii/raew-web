@@ -21,7 +21,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   tagline: "Precision Agricultural Machinery & Heavy Custom Engineering Solutions",
   phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+91 7651861335",
   phoneSecondary: "[REPLACE WITH SECONDARY PHONE]",
-  whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "919794427644",
+  whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "917651861335",
   emailPrimary: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || "info@raew.in",
   emailSales: "[REPLACE WITH SALES EMAIL]",
   address:
