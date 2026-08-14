@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "Custom Farm Equipment Fabrication",
   ],
   authors: [{ name: "M/s Raj Agro Engineering Works" }],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://raew.in"),
   openGraph: {
     title: "M/s Raj Agro Engineering Works",
     description:
@@ -45,7 +45,7 @@ export default async function RootLayout({
     "@type": "LocalBusiness",
     name: config.businessName,
     description: "Agricultural machinery and engineering solutions business.",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://raew.in",
     priceRange: "Price on Request",
   };
 

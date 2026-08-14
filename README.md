@@ -38,7 +38,7 @@ Full-stack production-ready business website and admin portal for **M/s Raj Agro
 
 ## 🔑 Default Admin Credentials
 
-- **Admin Login URL**: `http://localhost:3000/admin/login`
+- **Admin Login URL**: `https://raew.in/admin/login`
 - **Email**: `admin@rajagro.com`
 - **Password**: `Admin@RajAgro2026!`
 
@@ -66,7 +66,7 @@ NEXT_PUBLIC_BUSINESS_PHONE="+91 98765 43210"
 NEXT_PUBLIC_BUSINESS_WHATSAPP="919876543210"
 NEXT_PUBLIC_BUSINESS_EMAIL="info@rajagroengineering.com"
 NEXT_PUBLIC_BUSINESS_ADDRESS="Industrial Area, Phase 2, Near Focal Point, Punjab, India - 141003"
-NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+NEXT_PUBLIC_SITE_URL="https://raew.in"
 ```
 
 ### 3. Database Initialization & Seeding
