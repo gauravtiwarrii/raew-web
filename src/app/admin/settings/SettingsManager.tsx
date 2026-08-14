@@ -21,7 +21,10 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
       initialConfig.address ||
       "Madawa Newada, Post- Rehi, Mirzapur, Uttar Pradesh, India - 231211",
     GSTIN: initialConfig.GSTIN || initialConfig.gstin || "09BAZPT1519D1Z8",
-    GOOGLE_MAPS_URL: initialConfig.GOOGLE_MAPS_URL || initialConfig.googleMapsUrl || "[REPLACE WITH GOOGLE MAPS EMBED URL]",
+    GOOGLE_MAPS_URL:
+      initialConfig.GOOGLE_MAPS_URL ||
+      initialConfig.googleMapsUrl ||
+      "https://www.google.com/maps?q=Madawa+Newada%2C+Post-Rehi%2C+Mirzapur%2C+Uttar+Pradesh%2C+India+231211&output=embed",
     BUSINESS_HOURS: initialConfig.BUSINESS_HOURS || initialConfig.businessHours || "[REPLACE WITH BUSINESS HOURS]",
     FACEBOOK_URL: initialConfig.FACEBOOK_URL || initialConfig.facebookUrl || "[REPLACE WITH FACEBOOK URL]",
     INSTAGRAM_URL: initialConfig.INSTAGRAM_URL || initialConfig.instagramUrl || "[REPLACE WITH INSTAGRAM URL]",

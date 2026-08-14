@@ -433,7 +433,7 @@ export default async function HomePage() {
           <div className="lg:col-span-2 relative min-h-[220px] rounded-xl overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 text-xs">
             <iframe
               title="Factory Location Map"
-              src="https://maps.google.com/maps?q=Punjab+Industrial+Area&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              src="https://www.google.com/maps?q=Madawa+Newada%2C+Post-Rehi%2C+Mirzapur%2C+Uttar+Pradesh%2C+India+231211&output=embed"
               className="w-full h-full min-h-[240px] border-0"
               loading="lazy"
             />

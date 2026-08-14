@@ -35,7 +35,12 @@ async function main() {
       group: "CONTACT",
     },
     { key: "GSTIN", value: "09BAZPT1519D1Z8", group: "CONTACT" },
-    { key: "GOOGLE_MAPS_URL", value: "[REPLACE WITH GOOGLE MAPS EMBED URL]", group: "CONTACT" },
+    {
+      key: "GOOGLE_MAPS_URL",
+      value:
+        "https://www.google.com/maps?q=Madawa+Newada%2C+Post-Rehi%2C+Mirzapur%2C+Uttar+Pradesh%2C+India+231211&output=embed",
+      group: "CONTACT",
+    },
     { key: "BUSINESS_HOURS", value: "[REPLACE WITH BUSINESS HOURS]", group: "BUSINESS" },
     { key: "ESTABLISHED_YEAR", value: "[REPLACE WITH ESTABLISHED YEAR OR LEAVE BLANK]", group: "BUSINESS" },
     { key: "FACEBOOK_URL", value: "[REPLACE WITH FACEBOOK URL]", group: "SOCIAL" },
