@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Clock, MessageSquare, Wrench, ShieldCheck, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageSquare, ShieldCheck, ArrowRight } from "lucide-react";
 import { DEFAULT_SITE_CONFIG, SiteConfig } from "@/lib/config";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -18,45 +18,45 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
 
   return (
     <footer className="bg-slate-950 text-gray-300 border-t border-slate-800">
-      <div className="bg-emerald-950 border-b border-emerald-900 py-6 px-4">
+      <div className="bg-slate-950 border-b border-amber-900/40 py-6 px-4">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
           <div className="flex items-center space-x-3 justify-center md:justify-start">
-            <div className="p-2.5 rounded-lg bg-emerald-900 text-amber-400">
+            <div className="p-2.5 rounded-lg bg-slate-800 text-amber-400">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
               <h4 className="text-sm font-bold text-white">Practical Engineering</h4>
-              <p className="text-xs text-emerald-300">Field-focused equipment information</p>
+              <p className="text-xs text-amber-200">Field-focused equipment information</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3 justify-center md:justify-start">
-            <div className="p-2.5 rounded-lg bg-emerald-900 text-amber-400">
-              <Wrench className="w-6 h-6" />
+            <div className="p-2.5 rounded-lg bg-slate-800 text-amber-400">
+              <ArrowRight className="w-6 h-6" />
             </div>
             <div>
               <h4 className="text-sm font-bold text-white">Editable Catalog</h4>
-              <p className="text-xs text-emerald-300">Products, categories, and specs</p>
+              <p className="text-xs text-amber-200">Products, categories, and specs</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3 justify-center md:justify-start">
-            <div className="p-2.5 rounded-lg bg-emerald-900 text-amber-400">
+            <div className="p-2.5 rounded-lg bg-slate-800 text-amber-400">
               <Phone className="w-6 h-6" />
             </div>
             <div>
               <h4 className="text-sm font-bold text-white">Sales Enquiries</h4>
-              <p className="text-xs text-emerald-300">Phone, WhatsApp, and forms</p>
+              <p className="text-xs text-amber-200">Phone, WhatsApp, and forms</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3 justify-center md:justify-start">
-            <div className="p-2.5 rounded-lg bg-emerald-900 text-amber-400">
+            <div className="p-2.5 rounded-lg bg-slate-800 text-amber-400">
               <MessageSquare className="w-6 h-6" />
             </div>
             <div>
               <h4 className="text-sm font-bold text-white">Quotation Requests</h4>
-              <p className="text-xs text-emerald-300">Stored in the admin dashboard</p>
+              <p className="text-xs text-amber-200">Stored in the admin dashboard</p>
             </div>
           </div>
         </div>
@@ -65,9 +65,13 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-emerald-700 flex items-center justify-center text-amber-400">
-              <Wrench className="w-6 h-6" />
-            </div>
+            <Image
+              src="/branding/raew-logo.png"
+              alt="Raj Agro Engineering Works logo"
+              width={260}
+              height={130}
+              className="h-12 w-auto rounded-md"
+            />
             <span className="font-extrabold text-xl text-white tracking-tight">
               M/s Raj Agro Engineering Works
             </span>
@@ -79,7 +83,7 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
             <Link
               href={whatsAppHref}
               target="_blank"
-              className="px-4 py-2 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-600 rounded-md transition-colors inline-flex items-center space-x-1.5"
+              className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-md transition-colors inline-flex items-center space-x-1.5"
             >
               <MessageSquare className="w-4 h-4" />
               <span>WhatsApp Us</span>
@@ -95,23 +99,23 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
         </div>
 
         <div>
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-emerald-500 pl-2">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-amber-500 pl-2">
             Quick Links
           </h3>
           <ul className="space-y-2.5 text-sm">
-            <li><Link href="/" className="hover:text-emerald-400 transition-colors">Home</Link></li>
-            <li><Link href="/about" className="hover:text-emerald-400 transition-colors">About Company</Link></li>
-            <li><Link href="/products" className="hover:text-emerald-400 transition-colors">Product Catalog</Link></li>
-            <li><Link href="/categories" className="hover:text-emerald-400 transition-colors">Machinery Categories</Link></li>
-            <li><Link href="/services" className="hover:text-emerald-400 transition-colors">Services</Link></li>
-            <li><Link href="/gallery" className="hover:text-emerald-400 transition-colors">Gallery</Link></li>
-            <li><Link href="/contact" className="hover:text-emerald-400 transition-colors">Contact Us</Link></li>
-            <li><Link href="/quote" className="hover:text-emerald-400 transition-colors">Request a Quote</Link></li>
+            <li><Link href="/" className="hover:text-amber-300 transition-colors">Home</Link></li>
+            <li><Link href="/about" className="hover:text-amber-300 transition-colors">About Company</Link></li>
+            <li><Link href="/products" className="hover:text-amber-300 transition-colors">Product Catalog</Link></li>
+            <li><Link href="/categories" className="hover:text-amber-300 transition-colors">Machinery Categories</Link></li>
+            <li><Link href="/services" className="hover:text-amber-300 transition-colors">Services</Link></li>
+            <li><Link href="/gallery" className="hover:text-amber-300 transition-colors">Gallery</Link></li>
+            <li><Link href="/contact" className="hover:text-amber-300 transition-colors">Contact Us</Link></li>
+            <li><Link href="/quote" className="hover:text-amber-300 transition-colors">Request a Quote</Link></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-emerald-500 pl-2">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-amber-500 pl-2">
             Catalog Areas
           </h3>
           <ul className="space-y-2.5 text-sm text-gray-400">
@@ -126,28 +130,28 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-emerald-500 pl-2">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-amber-500 pl-2">
             Factory Contact
           </h3>
           <div className="space-y-3 text-sm text-gray-300">
             <div className="flex items-start space-x-2.5">
-              <MapPin className="w-4 h-4 text-emerald-500 mt-1 shrink-0" />
+              <MapPin className="w-4 h-4 text-amber-400 mt-1 shrink-0" />
               <span>{cleanAddress}</span>
             </div>
             {cleanGstin && (
               <div className="flex items-center space-x-2.5">
-                <span className="w-4 h-4 shrink-0 text-emerald-500 font-bold text-[10px] leading-4 text-center">
+                <span className="w-4 h-4 shrink-0 text-amber-400 font-bold text-[10px] leading-4 text-center">
                   ID
                 </span>
                 <span>GSTIN: {cleanGstin}</span>
               </div>
             )}
             <div className="flex items-center space-x-2.5">
-              <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
+              <Phone className="w-4 h-4 text-amber-400 shrink-0" />
               <span>{cleanPhone}</span>
             </div>
             <div className="flex items-center space-x-2.5">
-              <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
+              <Mail className="w-4 h-4 text-amber-400 shrink-0" />
               <span>{cleanEmail}</span>
             </div>
             <div className="flex items-start space-x-2.5">
@@ -168,7 +172,7 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Accounting powered by Refrens"
-            className="inline-flex rounded-2xl ring-1 ring-violet-400/50 shadow-[0_0_18px_rgba(124,58,237,0.45)] transition-transform hover:scale-[1.02]"
+            className="inline-flex rounded-2xl ring-1 ring-amber-400/60 shadow-[0_0_18px_rgba(251,191,36,0.35)] transition-transform hover:scale-[1.02]"
           >
             <Image
               src="/badges/refrens-powered.webp"
@@ -180,7 +184,7 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
             />
           </Link>
           <div className="flex items-center space-x-6">
-            <Link href="/admin/login" className="hover:text-emerald-400 transition-colors">
+            <Link href="/admin/login" className="hover:text-amber-300 transition-colors">
               Admin Portal
             </Link>
             <span>|</span>

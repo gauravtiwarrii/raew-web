@@ -2,16 +2,29 @@
 
 @layer base {
   :root {
-    --brand-forest: #062c12;
-    --brand-green-dark: #0f391b;
-    --brand-green: #15803d;
-    --brand-green-light: #22c55e;
-    --brand-accent: #d97706;
-    --brand-accent-hover: #b45309;
-    --brand-charcoal: #111827;
+    --brand-forest: #111111;
+    --brand-green-dark: #1f1f1f;
+    --brand-green: #c78a2c;
+    --brand-green-light: #e0b25e;
+    --brand-accent: #c78a2c;
+    --brand-accent-hover: #a16f1d;
+    --brand-charcoal: #111111;
     --brand-gray-dark: #1f2937;
     --brand-gray-light: #f3f4f6;
-    --brand-offwhite: #f9fafb;
+    --brand-offwhite: #f8f6f1;
+
+    /* Map existing emerald utility usage to a gold palette sitewide. */
+    --color-emerald-50: #fff8e6;
+    --color-emerald-100: #ffefc2;
+    --color-emerald-200: #ffe18f;
+    --color-emerald-300: #fbd060;
+    --color-emerald-400: #efbd3f;
+    --color-emerald-500: #d9a62f;
+    --color-emerald-600: #bd8926;
+    --color-emerald-700: #9d6f1f;
+    --color-emerald-800: #7b5619;
+    --color-emerald-900: #5d4114;
+    --color-emerald-950: #3a280d;
   }
 
   body {
@@ -30,16 +43,16 @@
   background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #166534;
+  background: #c78a2c;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #15803d;
+  background: #a16f1d;
 }
 
 /* Custom Industrial Styles & Micro-Animations */
 .hero-gradient {
-  background: linear-gradient(135deg, rgba(6, 44, 18, 0.95) 0%, rgba(15, 57, 27, 0.88) 100%);
+  background: linear-gradient(135deg, rgba(17, 17, 17, 0.95) 0%, rgba(44, 33, 18, 0.9) 100%);
 }
 
 .card-hover {
@@ -51,9 +64,9 @@
 }
 
 .badge-agricultural {
-  background-color: #dcfce7;
-  color: #14532d;
-  border: 1px solid #bbf7d0;
+  background-color: #fef3c7;
+  color: #78350f;
+  border: 1px solid #fcd34d;
 }
 
 .badge-accent {

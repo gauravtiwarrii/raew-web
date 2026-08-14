@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Mail, Clock, MessageSquare, ChevronRight, Wrench } from "lucide-react";
+import { Menu, X, Phone, Mail, Clock, MessageSquare, ChevronRight } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 interface HeaderProps {
@@ -51,16 +52,16 @@ export default function Header({
       <div className="bg-slate-900 text-gray-300 text-xs py-2 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-6">
-            <span className="flex items-center space-x-1.5 hover:text-emerald-400 transition-colors">
-              <Phone className="w-3.5 h-3.5 text-emerald-500" />
+            <span className="flex items-center space-x-1.5 hover:text-amber-300 transition-colors">
+              <Phone className="w-3.5 h-3.5 text-amber-400" />
               <span>{cleanPhone}</span>
             </span>
-            <span className="flex items-center space-x-1.5 hover:text-emerald-400 transition-colors">
-              <Mail className="w-3.5 h-3.5 text-emerald-500" />
+            <span className="flex items-center space-x-1.5 hover:text-amber-300 transition-colors">
+              <Mail className="w-3.5 h-3.5 text-amber-400" />
               <span>{cleanEmail}</span>
             </span>
             <span className="flex items-center space-x-1.5 text-gray-400">
-              <Clock className="w-3.5 h-3.5 text-amber-500" />
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span>{businessHours}</span>
             </span>
           </div>
@@ -69,9 +70,9 @@ export default function Header({
             <Link
               href={whatsAppHref}
               target="_blank"
-              className="flex items-center space-x-1 text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
+              className="flex items-center space-x-1 text-amber-300 hover:text-amber-200 transition-colors font-medium"
             >
-              <MessageSquare className="w-3.5 h-3.5 fill-emerald-500 text-emerald-500" />
+              <MessageSquare className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span>WhatsApp Quick Connect</span>
             </Link>
             <span className="text-gray-600">|</span>
@@ -87,14 +88,19 @@ export default function Header({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo & Brand Name */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center text-amber-400 font-bold shadow-sm group-hover:bg-emerald-900 transition-colors">
-              <Wrench className="w-6 h-6 text-amber-400" />
-            </div>
+            <Image
+              src="/branding/raew-logo.png"
+              alt="Raj Agro Engineering Works logo"
+              width={280}
+              height={140}
+              priority
+              className="h-12 w-auto rounded-md"
+            />
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-tight group-hover:text-emerald-800 transition-colors">
+              <span className="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-tight group-hover:text-amber-700 transition-colors">
                 M/s Raj Agro Engineering Works
               </span>
-              <span className="text-xs text-emerald-700 font-semibold tracking-wider uppercase">
+              <span className="text-xs text-amber-700 font-semibold tracking-wider uppercase">
                 Agricultural Machinery & Custom Engineering
               </span>
             </div>
@@ -110,8 +116,8 @@ export default function Header({
                   href={link.href}
                   className={`px-3.5 py-2 rounded-md text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-emerald-800 bg-emerald-50 font-bold"
-                      : "text-gray-700 hover:text-emerald-800 hover:bg-gray-50"
+                      ? "text-amber-800 bg-amber-50 font-bold"
+                      : "text-gray-700 hover:text-amber-800 hover:bg-amber-50/60"
                   }`}
                 >
                   {link.name}
@@ -124,7 +130,7 @@ export default function Header({
           <div className="hidden sm:flex items-center space-x-3">
             <Link
               href="/quote"
-              className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-sm transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-lg shadow-sm transition-all transform hover:-translate-y-0.5"
             >
               <span>Get a Quote</span>
               <ChevronRight className="w-4 h-4 ml-1" />
@@ -135,14 +141,14 @@ export default function Header({
           <div className="flex lg:hidden items-center space-x-2">
             <Link
               href="/quote"
-              className="px-3 py-1.5 text-xs font-bold text-white bg-emerald-700 rounded-md sm:hidden"
+              className="px-3 py-1.5 text-xs font-bold text-slate-950 bg-amber-400 rounded-md sm:hidden"
             >
               Quote
             </Link>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-gray-700 hover:text-emerald-800 hover:bg-gray-100 focus:outline-none"
+              className="p-2 rounded-lg text-gray-700 hover:text-amber-800 hover:bg-amber-50 focus:outline-none"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -163,7 +169,7 @@ export default function Header({
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-4 py-2.5 rounded-lg text-base font-semibold transition-colors ${
-                    isActive ? "text-emerald-800 bg-emerald-50" : "text-gray-700 hover:bg-gray-50"
+                    isActive ? "text-amber-800 bg-amber-50" : "text-gray-700 hover:bg-amber-50/60"
                   }`}
                 >
                   {link.name}
@@ -176,7 +182,7 @@ export default function Header({
             <Link
               href="/quote"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center py-3 text-center text-sm font-bold text-white bg-emerald-700 rounded-lg shadow-sm"
+              className="w-full flex items-center justify-center py-3 text-center text-sm font-bold text-slate-950 bg-amber-400 rounded-lg shadow-sm"
             >
               Request a Quote
             </Link>
@@ -184,9 +190,9 @@ export default function Header({
               href={whatsAppHref}
               target="_blank"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center py-2.5 text-center text-sm font-bold text-emerald-800 bg-emerald-50 rounded-lg border border-emerald-200"
+              className="w-full flex items-center justify-center py-2.5 text-center text-sm font-bold text-amber-900 bg-amber-50 rounded-lg border border-amber-200"
             >
-              <MessageSquare className="w-4 h-4 mr-2 text-emerald-600" />
+              <MessageSquare className="w-4 h-4 mr-2 text-amber-700" />
               Chat on WhatsApp
             </Link>
           </div>

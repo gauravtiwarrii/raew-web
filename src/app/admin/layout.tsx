@@ -1,15 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
 import {
-  Wrench,
   LayoutDashboard,
   Package,
   Layers,
   Inbox,
   Image as ImageIcon,
   Settings,
-  LogOut,
   ExternalLink,
 } from "lucide-react";
 import AdminLogoutButton from "./AdminLogoutButton";
@@ -34,12 +33,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="space-y-6">
           {/* Admin Header */}
           <div className="flex items-center space-x-3 px-2">
-            <div className="w-9 h-9 rounded-lg bg-emerald-800 text-amber-400 flex items-center justify-center font-bold">
-              <Wrench className="w-5 h-5" />
-            </div>
+            <Image
+              src="/branding/raew-logo.png"
+              alt="Raj Agro Engineering Works logo"
+              width={180}
+              height={90}
+              className="h-10 w-auto rounded-md"
+            />
             <div>
               <h2 className="font-bold text-sm text-white">Raj Agro Admin</h2>
-              <p className="text-[10px] text-emerald-400 font-mono">Control Center v1.0</p>
+              <p className="text-[10px] text-amber-300 font-mono">Control Center v1.0</p>
             </div>
           </div>
 
@@ -49,7 +52,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               href="/admin/dashboard"
               className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <LayoutDashboard className="w-4 h-4 text-emerald-500" />
+              <LayoutDashboard className="w-4 h-4 text-amber-400" />
               <span>Overview Metrics</span>
             </Link>
 
@@ -65,7 +68,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               href="/admin/categories"
               className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <Layers className="w-4 h-4 text-emerald-500" />
+              <Layers className="w-4 h-4 text-amber-400" />
               <span>Categories</span>
             </Link>
 
@@ -81,7 +84,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               href="/admin/gallery"
               className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <ImageIcon className="w-4 h-4 text-emerald-500" />
+              <ImageIcon className="w-4 h-4 text-amber-400" />
               <span>Gallery Management</span>
             </Link>
 
