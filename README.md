@@ -62,10 +62,11 @@ Default `.env` settings:
 DATABASE_URL="file:./dev.db"
 JWT_SECRET="raj-agro-secret-jwt-token-key-2026-production-change-me"
 NEXT_PUBLIC_BUSINESS_NAME="M/s Raj Agro Engineering Works"
-NEXT_PUBLIC_BUSINESS_PHONE="+91 98765 43210"
-NEXT_PUBLIC_BUSINESS_WHATSAPP="919876543210"
-NEXT_PUBLIC_BUSINESS_EMAIL="info@rajagroengineering.com"
-NEXT_PUBLIC_BUSINESS_ADDRESS="Industrial Area, Phase 2, Near Focal Point, Punjab, India - 141003"
+NEXT_PUBLIC_BUSINESS_PHONE="9794427644"
+NEXT_PUBLIC_BUSINESS_WHATSAPP="919794427644"
+NEXT_PUBLIC_BUSINESS_EMAIL="info@raew.in"
+NEXT_PUBLIC_BUSINESS_ADDRESS="Madawa Newada, Post- Rehi, Mirzapur, Uttar Pradesh, India - 231211"
+NEXT_PUBLIC_BUSINESS_GSTIN="09BAZPT1519D1Z8"
 NEXT_PUBLIC_SITE_URL="https://raew.in"
 ```
 

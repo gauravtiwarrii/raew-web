@@ -32,6 +32,7 @@ export default function ContactClient({ config }: ContactClientProps) {
   const cleanPhone = config.phonePrimary.split("[")[0].trim() || config.phonePrimary;
   const cleanEmail = config.emailPrimary.split("[")[0].trim() || config.emailPrimary;
   const cleanAddress = config.address.split("[")[0].trim() || config.address;
+  const cleanGstin = (config.gstin || "").split("[")[0].trim();
   const waUrl = getWhatsAppLink(undefined, undefined, config.whatsappNumber);
   const hasConfiguredMap = config.googleMapsUrl.startsWith("https://") || config.googleMapsUrl.startsWith("http://");
 
@@ -102,6 +103,16 @@ export default function ContactClient({ config }: ContactClientProps) {
                   <span className="text-xs text-gray-600">{cleanAddress}</span>
                 </div>
               </div>
+
+              {cleanGstin && (
+                <div className="flex items-start space-x-3">
+                  <span className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5 font-bold text-[11px] leading-5 text-center">ID</span>
+                  <div>
+                    <span className="font-bold block text-slate-900">GSTIN</span>
+                    <span className="text-xs text-gray-600">{cleanGstin}</span>
+                  </div>
+                </div>
+              )}
 
               <div className="flex items-start space-x-3">
                 <Phone className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
@@ -232,7 +243,7 @@ export default function ContactClient({ config }: ContactClientProps) {
                     <input
                       type="tel"
                       {...register("phone")}
-                      placeholder="+91 98765 43210"
+                      placeholder="9794427644"
                       className="w-full px-3 py-2.5 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:outline-none"
                     />
                     {errors.phone && <p className="text-[11px] text-red-600 mt-0.5">{errors.phone.message}</p>}

@@ -61,6 +61,10 @@ export default async function RootLayout({
     };
   }
 
+  if (!isPlaceholderValue(config.gstin)) {
+    structuredData.taxID = config.gstin;
+  }
+
   return (
     <html lang="en" className="scroll-smooth">
       <head>

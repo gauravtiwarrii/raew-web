@@ -11,13 +11,16 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
   const [formData, setFormData] = useState<Record<string, string>>({
     BUSINESS_NAME: initialConfig.BUSINESS_NAME || initialConfig.businessName || "M/s Raj Agro Engineering Works",
     TAGLINE: initialConfig.TAGLINE || initialConfig.tagline || "Precision Agricultural Machinery Solutions",
-    PHONE_PRIMARY: initialConfig.PHONE_PRIMARY || initialConfig.phonePrimary || "[REPLACE WITH ACTUAL BUSINESS PHONE]",
+    PHONE_PRIMARY: initialConfig.PHONE_PRIMARY || initialConfig.phonePrimary || "9794427644",
     PHONE_SECONDARY: initialConfig.PHONE_SECONDARY || initialConfig.phoneSecondary || "[REPLACE WITH SECONDARY PHONE]",
-    WHATSAPP_NUMBER: initialConfig.WHATSAPP_NUMBER || initialConfig.whatsappNumber || "[REPLACE WITH ACTUAL WHATSAPP NUMBER]",
-    EMAIL_PRIMARY: initialConfig.EMAIL_PRIMARY || initialConfig.emailPrimary || "[REPLACE WITH BUSINESS EMAIL]",
+    WHATSAPP_NUMBER: initialConfig.WHATSAPP_NUMBER || initialConfig.whatsappNumber || "919794427644",
+    EMAIL_PRIMARY: initialConfig.EMAIL_PRIMARY || initialConfig.emailPrimary || "info@raew.in",
     EMAIL_SALES: initialConfig.EMAIL_SALES || initialConfig.emailSales || "[REPLACE WITH SALES EMAIL]",
-    ADDRESS: initialConfig.ADDRESS || initialConfig.address || "[REPLACE WITH FACTORY ADDRESS]",
-    GSTIN: initialConfig.GSTIN || initialConfig.gstin || "[REPLACE WITH GSTIN]",
+    ADDRESS:
+      initialConfig.ADDRESS ||
+      initialConfig.address ||
+      "Madawa Newada, Post- Rehi, Mirzapur, Uttar Pradesh, India - 231211",
+    GSTIN: initialConfig.GSTIN || initialConfig.gstin || "09BAZPT1519D1Z8",
     GOOGLE_MAPS_URL: initialConfig.GOOGLE_MAPS_URL || initialConfig.googleMapsUrl || "[REPLACE WITH GOOGLE MAPS EMBED URL]",
     BUSINESS_HOURS: initialConfig.BUSINESS_HOURS || initialConfig.businessHours || "[REPLACE WITH BUSINESS HOURS]",
     FACEBOOK_URL: initialConfig.FACEBOOK_URL || initialConfig.facebookUrl || "[REPLACE WITH FACEBOOK URL]",

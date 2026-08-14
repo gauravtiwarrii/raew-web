@@ -14,9 +14,9 @@ interface HeaderProps {
 }
 
 export default function Header({
-  phone = "[REPLACE WITH ACTUAL BUSINESS PHONE]",
-  email = "[REPLACE WITH BUSINESS EMAIL]",
-  whatsapp = "[REPLACE WITH ACTUAL WHATSAPP NUMBER]",
+  phone = "9794427644",
+  email = "info@raew.in",
+  whatsapp = "919794427644",
   businessHours = "[REPLACE WITH BUSINESS HOURS]",
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
