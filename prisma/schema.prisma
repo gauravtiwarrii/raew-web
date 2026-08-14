@@ -1,0 +1,91 @@
+// Prisma Schema for M/s Raj Agro Engineering Works
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  active      Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id               String     @id @default(uuid())
+  name             String
+  slug             String     @unique
+  categoryId       String
+  category         Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  shortDescription String
+  description      String
+  specifications   String     // JSON formatted object or key-value list
+  features         String     // JSON formatted array of feature strings
+  applications     String     // JSON formatted array of application strings
+  image            String
+  galleryImages    String     // JSON formatted array of secondary image URLs
+  priceDisplay     String     @default("Price on Request")
+  availability     String     @default("In Stock") // In Stock, Made to Order, Available
+  featured         Boolean    @default(false)
+  active           Boolean    @default(true)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  enquiries        Enquiry[]
+}
+
+model Enquiry {
+  id           String   @id @default(uuid())
+  name         String
+  company      String?
+  phone        String
+  email        String?
+  productId    String?
+  product      Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productTitle String?
+  quantity     Int      @default(1)
+  location     String
+  message      String
+  status       String   @default("NEW") // NEW, CONTACTED, QUOTED, CONVERTED, CLOSED, SPAM
+  source       String   @default("WEBSITE") // WEBSITE, QUOTE_FORM, WHATSAPP
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model GalleryItem {
+  id          String   @id @default(uuid())
+  title       String
+  category    String   // Machinery, Infrastructure, Workshop, Products, Quality
+  imageUrl    String
+  description String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model SiteSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  group     String   @default("GENERAL") // GENERAL, CONTACT, SOCIAL, BUSINESS
+  updatedAt DateTime @updatedAt
+}
