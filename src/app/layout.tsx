@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
+import { Inter, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { getSiteConfig, isPlaceholderValue } from "@/lib/site-settings";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -66,7 +80,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`${inter.variable} ${dmSerif.variable} scroll-smooth`}>
       <head>
         <script
           type="application/ld+json"
@@ -75,7 +89,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col antialiased bg-gray-50 text-slate-900">
+      <body className="min-h-screen flex flex-col antialiased font-[family-name:var(--font-inter)] bg-[var(--offwhite)] text-[var(--charcoal-900)]">
         <Header
           phone={config.phonePrimary}
           email={config.emailPrimary}
