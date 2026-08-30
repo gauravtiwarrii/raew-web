@@ -1,104 +1,177 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
-import ProductCard from "@/components/ProductCard";
-import { Search, Filter, Wrench } from "lucide-react";
+import ProductCard from "@/components/products/ProductCard";
+import { Search, SlidersHorizontal, PackageSearch } from "lucide-react";
 
-export const metadata = {
-  title: "Agricultural Machinery Products Catalog",
-  description: "Browse our complete range of rotavators, multi-crop threshers, laser land levelers, tipping trailers, seed drills, and custom farm implements.",
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://raew.in";
+
+export const metadata: Metadata = {
+  title: "Machinery Catalogue",
+  description:
+    "Rotavators, multi-crop threshers, laser land levelers, tipping trailers, seed drills and cultivators, built to order at our works in Mirzapur, Uttar Pradesh.",
+  alternates: { canonical: `${SITE_URL}/products` },
 };
 
 export const revalidate = 30;
 
 interface ProductsPageProps {
-  searchParams: Promise<{
-    search?: string;
-    category?: string;
-    sort?: string;
-  }>;
+  searchParams: Promise<{ search?: string; category?: string; sort?: string }>;
 }
+
+interface CategoryRecord {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface ProductRecord {
+  id: string;
+  name: string;
+  slug: string;
+  shortDescription: string;
+  image: string;
+  priceDisplay: string;
+  availability: string;
+  featured: boolean;
+  brochure: string | null;
+  category: { name: string };
+}
+
+type SortKey = "newest" | "name-asc" | "name-desc";
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "newest", label: "Newest first" },
+  { value: "name-asc", label: "Name (A–Z)" },
+  { value: "name-desc", label: "Name (Z–A)" },
+];
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
-  const search = params.search || "";
+  const search = (params.search || "").trim();
   const categorySlug = params.category || "";
-  const sort = params.sort || "newest";
+  const sort: SortKey = SORT_OPTIONS.some((o) => o.value === params.sort)
+    ? (params.sort as SortKey)
+    : "newest";
 
-  let categories: any[] = [];
-  let products: any[] = [];
+  let categories: CategoryRecord[] = [];
+  let products: ProductRecord[] = [];
+  let totalCount = 0;
 
   try {
-    categories = await prisma.category.findMany({
-      where: { active: true },
-      orderBy: { sortOrder: "asc" },
-    });
+    const orderBy =
+      sort === "name-asc"
+        ? { name: "asc" as const }
+        : sort === "name-desc"
+          ? { name: "desc" as const }
+          : { createdAt: "desc" as const };
 
-    const whereClause: any = { active: true };
+    const whereClause = {
+      active: true,
+      ...(categorySlug ? { category: { slug: categorySlug } } : {}),
+      ...(search
+        ? {
+            OR: [
+              { name: { contains: search } },
+              { shortDescription: { contains: search } },
+              { description: { contains: search } },
+            ],
+          }
+        : {}),
+    };
 
-    if (categorySlug) {
-      whereClause.category = { slug: categorySlug };
-    }
-
-    if (search) {
-      whereClause.OR = [
-        { name: { contains: search } },
-        { shortDescription: { contains: search } },
-        { description: { contains: search } },
-      ];
-    }
-
-    let orderBy: any = { createdAt: "desc" };
-    if (sort === "name-asc") orderBy = { name: "asc" };
-    if (sort === "name-desc") orderBy = { name: "desc" };
-
-    products = await prisma.product.findMany({
-      where: whereClause,
-      include: { category: true },
-      orderBy,
-    });
+    // `totalCount` is queried separately and is deliberately unfiltered. The
+    // "All machinery" chip previously printed `products.length`, i.e. the
+    // *filtered* count — so with a category selected it read "All machinery (2)"
+    // while clicking it revealed six. It now shows the true catalogue total.
+    [categories, products, totalCount] = await Promise.all([
+      prisma.category.findMany({
+        where: { active: true },
+        orderBy: { sortOrder: "asc" },
+      }) as Promise<CategoryRecord[]>,
+      prisma.product.findMany({
+        where: whereClause,
+        include: { category: true },
+        orderBy,
+      }) as Promise<ProductRecord[]>,
+      prisma.product.count({ where: { active: true } }),
+    ]);
   } catch (error) {
     console.error("Products page data fetch error:", error);
   }
 
-  return (
-    <div className="space-y-10 py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header Banner */}
-      <div className="bg-slate-950 text-white p-8 rounded-2xl border border-slate-800 space-y-4">
-        <div className="inline-flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider bg-slate-900 px-3 py-1 rounded-md border border-slate-800">
-          <Wrench className="w-4 h-4 text-amber-400" />
-          <span>Industrial Equipment Catalog</span>
-        </div>
-        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-          Agricultural Machinery & Engineering Products
-        </h1>
-        <p className="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
-          High-durability rotavators, laser land levelers, multi-crop threshers, tipping trailers, and custom farm implements. Built for heavy field endurance and peak operational output.
-        </p>
-      </div>
+  /** Build a filter URL preserving the other active parameters. */
+  const filterHref = (nextCategory: string) => {
+    const qs = new URLSearchParams();
+    if (nextCategory) qs.set("category", nextCategory);
+    if (search) qs.set("search", search);
+    if (sort !== "newest") qs.set("sort", sort);
+    const q = qs.toString();
+    return q ? `/products?${q}` : "/products";
+  };
 
-      {/* Search & Filter Bar */}
-      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xs space-y-4">
-        <form method="GET" className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-          {/* Search Bar */}
-          <div className="md:col-span-5 relative">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
-            <input
-              type="text"
-              name="search"
-              defaultValue={search}
-              placeholder="Search rotavator, thresher, leveler..."
-              className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-700"
-            />
+  const isFiltered = Boolean(search || categorySlug);
+  const activeCategory = categories.find((c) => c.slug === categorySlug);
+
+  return (
+    <div className="shell py-10">
+      {/* ============ HEADER ============ */}
+      <header className="max-w-3xl">
+        <p className="eyebrow text-[var(--accent)]">Machinery catalogue</p>
+        <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-[var(--text)] sm:text-4xl">
+          Every machine, with its specifications.
+        </h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-[var(--text-muted)]">
+          Rotavators, threshers, laser land levelers, tipping trailers, seed drills and
+          cultivators. Each one is built to order at our works — tell us your tractor
+          horsepower and working width and we will confirm what fits.
+        </p>
+      </header>
+
+      {/* ============ FILTERS ============ */}
+      <div className="mt-10 border border-[var(--border)] bg-[var(--surface-2)]">
+        <form
+          method="GET"
+          action="/products"
+          className="grid grid-cols-1 gap-4 p-5 md:grid-cols-12"
+        >
+          <div className="md:col-span-6">
+            <label
+              htmlFor="product-search"
+              className="spec-label mb-2 block text-[var(--text-subtle)]"
+            >
+              Search
+            </label>
+            <div className="relative">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-subtle)]"
+                aria-hidden="true"
+              />
+              <input
+                id="product-search"
+                type="search"
+                name="search"
+                defaultValue={search}
+                placeholder="Rotavator, thresher, leveler…"
+                className="w-full border border-[var(--border-strong)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm text-[var(--text)] placeholder:text-[var(--text-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+              />
+            </div>
           </div>
 
-          {/* Category Dropdown */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-3">
+            <label
+              htmlFor="product-category"
+              className="spec-label mb-2 block text-[var(--text-subtle)]"
+            >
+              Category
+            </label>
             <select
+              id="product-category"
               name="category"
               defaultValue={categorySlug}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              className="w-full border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
             >
-              <option value="">All Machinery Categories</option>
+              <option value="">All categories</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.slug}>
                   {cat.name}
@@ -107,53 +180,61 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </select>
           </div>
 
-          {/* Sort Dropdown */}
           <div className="md:col-span-2">
+            <label
+              htmlFor="product-sort"
+              className="spec-label mb-2 block text-[var(--text-subtle)]"
+            >
+              Sort
+            </label>
             <select
+              id="product-sort"
               name="sort"
               defaultValue={sort}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              className="w-full border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
             >
-              <option value="newest">Newest First</option>
-              <option value="name-asc">Name (A-Z)</option>
-              <option value="name-desc">Name (Z-A)</option>
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
             </select>
           </div>
 
-          {/* Submit Filter Button */}
-          <div className="md:col-span-1">
+          <div className="flex items-end md:col-span-1">
             <button
               type="submit"
-              className="w-full py-2.5 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg transition-colors flex items-center justify-center"
+              className="inline-flex rounded-[6px] w-full items-center justify-center gap-1.5 bg-[var(--accent)] px-3 py-2.5 text-sm font-bold text-[var(--accent-fg)] transition-colors duration-200 hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
             >
-              <Filter className="w-4 h-4 mr-1" />
-              <span>Filter</span>
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+              <span className="md:sr-only">Apply filters</span>
             </button>
           </div>
         </form>
 
-        {/* Category Quick Filter Chips */}
-        <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+        <div className="flex flex-wrap gap-2 border-t border-[var(--border)] p-5 pt-4">
           <Link
-            href="/products"
-            className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+            href={filterHref("")}
+            aria-current={!categorySlug ? "true" : undefined}
+            className={`px-3 py-1.5 text-xs font-bold transition-colors duration-150 ${
               !categorySlug
-                ? "bg-emerald-800 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-[var(--surface-inverse)] text-white"
+                : "border border-[var(--border-strong)] text-[var(--text-muted)] hover:bg-[var(--surface)]"
             }`}
           >
-            All Products ({products.length})
+            All machinery ({totalCount})
           </Link>
           {categories.map((cat) => {
             const isActive = categorySlug === cat.slug;
             return (
               <Link
                 key={cat.id}
-                href={`/products?category=${cat.slug}${search ? `&search=${search}` : ""}`}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                href={filterHref(cat.slug)}
+                aria-current={isActive ? "true" : undefined}
+                className={`px-3 py-1.5 text-xs font-bold transition-colors duration-150 ${
                   isActive
-                    ? "bg-emerald-800 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-[var(--surface-inverse)] text-white"
+                    : "border border-[var(--border-strong)] text-[var(--text-muted)] hover:bg-[var(--surface)]"
                 }`}
               >
                 {cat.name}
@@ -163,9 +244,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </div>
 
-      {/* Product Grid */}
+      {/* ============ RESULTS ============ */}
+      <p aria-live="polite" className="mt-6 text-xs font-semibold text-[var(--text-muted)]">
+        {products.length === 0
+          ? "No machines match this filter."
+          : `Showing ${products.length} of ${totalCount} machines`}
+        {activeCategory && ` in ${activeCategory.name}`}
+        {search && ` matching “${search}”`}
+      </p>
+
       {products.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -178,22 +267,40 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               priceDisplay={product.priceDisplay}
               availability={product.availability}
               featured={product.featured}
+              brochure={product.brochure ?? undefined}
             />
           ))}
         </div>
       ) : (
-        <div className="bg-white p-12 rounded-xl border border-gray-200 text-center space-y-4">
-          <Wrench className="w-12 h-12 text-gray-400 mx-auto" />
-          <h3 className="text-lg font-bold text-slate-900">No machinery matching your filter</h3>
-          <p className="text-xs text-gray-500 max-w-sm mx-auto">
-            Try adjusting your search query or selected category filter to view available equipment.
+        <div className="panel mt-4 px-6 py-16 text-center">
+          <PackageSearch
+            className="mx-auto h-10 w-10 text-[var(--text-subtle)]"
+            aria-hidden="true"
+          />
+          <h2 className="mt-4 text-lg font-bold tracking-tight text-[var(--text)]">
+            Nothing matches that filter
+          </h2>
+          <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[var(--text-muted)]">
+            {isFiltered
+              ? "Try a broader search term or a different category. If you are looking for a machine we do not list, we also build to order."
+              : "The catalogue is being updated. Please contact the works directly for current machinery."}
           </p>
-          <Link
-            href="/products"
-            className="inline-block px-4 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 rounded-md border border-emerald-200"
-          >
-            Reset Filters
-          </Link>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            {isFiltered && (
+              <Link
+                href="/products"
+                className="inline-flex rounded-[6px] items-center border border-[var(--border-strong)] px-4 py-2.5 text-xs font-bold text-[var(--text)] transition-colors hover:bg-[var(--surface-2)]"
+              >
+                Clear filters
+              </Link>
+            )}
+            <Link
+              href="/quote"
+              className="inline-flex rounded-[6px] items-center bg-[var(--accent)] px-4 py-2.5 text-xs font-bold text-[var(--accent-fg)] transition-colors hover:bg-[var(--accent-hover)]"
+            >
+              Describe what you need
+            </Link>
+          </div>
         </div>
       )}
     </div>

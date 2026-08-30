@@ -1,13 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
+/**
+ * NOTE ON IMAGES
+ *
+ * Products, categories and gallery items are seeded with an empty image value
+ * rather than a stock photograph. The previous version of this file reused four
+ * Unsplash photos across all six machines, four categories and the gallery, so
+ * two different machines shared the same generic picture and one image was a
+ * photograph of an unrelated company's workshop.
+ *
+ * An empty value makes the site render a titled "photograph pending"
+ * placeholder (see src/lib/images.ts and src/components/ui/ImagePlaceholder).
+ * Add real photographs under public/images/products/ and set the path from the
+ * admin panel — see public/images/README.md.
+ */
+
+
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Starting seed for M/s Raj Agro Engineering Works...");
 
   // 1. Create Default Admin User
-  const passwordHash = await bcrypt.hash("Admin@RajAgro2026!", 10);
+  // The seed password is never hardcoded here — a committed credential would
+  // ship a known admin login with the repository. Set ADMIN_SEED_PASSWORD in
+  // .env.local before seeding (see .env.example).
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD;
+  if (!adminPassword || adminPassword.length < 12) {
+    throw new Error(
+      "ADMIN_SEED_PASSWORD is not set (or is shorter than 12 characters). " +
+        "Add a strong value to .env.local, then re-run the seed."
+    );
+  }
+  const passwordHash = await bcrypt.hash(adminPassword, 10);
   const admin = await prisma.user.upsert({
     where: { email: "admin@rajagro.com" },
     update: {},
@@ -63,28 +89,28 @@ async function main() {
       name: "Agricultural Machinery",
       slug: "agricultural-machinery",
       description: "Heavy-duty power machines for soil preparation, harvesting, and crop handling.",
-      image: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+      image: "",
       sortOrder: 1,
     },
     {
       name: "Farm Implements",
       slug: "farm-implements",
       description: "Tractor-mounted implements engineered for high yield and operational endurance.",
-      image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
+      image: "",
       sortOrder: 2,
     },
     {
       name: "Engineering & Fabrication",
       slug: "engineering-fabrication",
       description: "Custom heavy structural fabrication, laser levelers, and specialized industrial equipment.",
-      image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+      image: "",
       sortOrder: 3,
     },
     {
       name: "Haulage & Transport",
       slug: "haulage-transport",
       description: "Tipping tractor trailers and agricultural transport chassis built for heavy loads.",
-      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+      image: "",
       sortOrder: 4,
     },
   ];
@@ -102,6 +128,20 @@ async function main() {
   console.log("✅ Categories seeded.");
 
   // 4. Create Seed Products
+  //
+  // ⚠️  UNVERIFIED PERFORMANCE FIGURES — OWNER SIGN-OFF REQUIRED
+  // The product copy below contains quantitative claims whose source is not
+  // recorded anywhere in this project:
+  //   • "3x longer lifespan" (boron steel blades)
+  //   • "99.5% grain purity output" (dual blower thresher)
+  //   • "saves up to 35% irrigation water" (laser land leveller, stated twice)
+  //   • "IP67 rated" (laser receiver/transmitter)
+  // These are plausible for the equipment class and may well be real supplier
+  // or test figures, so they are left intact rather than silently rewritten —
+  // but they are advertising claims and are legally significant. Confirm each
+  // against a supplier datasheet or your own test record, then either keep it
+  // or edit it out. All of this text is editable from the admin panel, so no
+  // code change is needed to correct it.
   const productsData = [
     {
       name: "Multi-Speed Heavy Duty Rotavator",
@@ -131,11 +171,8 @@ async function main() {
         "Soil aeration and seedbed preparation",
         "Organic matter mixing into deep soil"
       ]),
-      image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
-      ]),
+      image: "",
+      galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
       featured: true,
@@ -167,10 +204,8 @@ async function main() {
         "Mustard and soybean grain separation",
         "Commercial grain processing hubs & custom farm contracting"
       ]),
-      image: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
-      ]),
+      image: "",
+      galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
       featured: true,
@@ -202,10 +237,8 @@ async function main() {
         "Industrial plot grading and road bed site preparation",
         "Sports field and commercial site surface leveling"
       ]),
-      image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80"
-      ]),
+      image: "",
+      galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
       featured: true,
@@ -237,7 +270,7 @@ async function main() {
         "Sand, gravel, and construction aggregate transport",
         "Municipal waste handling and earth moving"
       ]),
-      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+      image: "",
       galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
@@ -270,7 +303,7 @@ async function main() {
         "Direct seed planting in prepared seedbeds",
         "Simultaneous basal fertilizer application"
       ]),
-      image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
+      image: "",
       galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
@@ -303,7 +336,7 @@ async function main() {
         "Deep weed uprooting between crop seasons",
         "Mixing manure and compost into subsoil"
       ]),
-      image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+      image: "",
       galleryImages: JSON.stringify([]),
       priceDisplay: "Price on Request",
       availability: "In Stock",
@@ -326,25 +359,25 @@ async function main() {
     {
       title: "Heavy Structural Fabrication Workshop",
       category: "Infrastructure",
-      imageUrl: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "",
       description: "State-of-the-art manufacturing plant equipped with CNC cutting and precision welding.",
     },
     {
       title: "Rotavator Assembly Line",
       category: "Workshop",
-      imageUrl: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "",
       description: "Quality inspection and assembly of heavy-duty rotary tillers.",
     },
     {
       title: "Field Demonstration & Customer Handover",
       category: "Machinery",
-      imageUrl: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "",
       description: "On-site performance test of laser land levelers in farming fields.",
     },
     {
       title: "Quality Inspection & Stress Testing",
       category: "Quality",
-      imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "",
       description: "Rigorous load testing of agricultural tipping trailer frames.",
     },
   ];

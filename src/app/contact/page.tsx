@@ -4,6 +4,7 @@ import { getSiteConfig } from "@/lib/site-settings";
 export const metadata = {
   title: "Contact Us",
   description: "Contact M/s Raj Agro Engineering Works - Phone, WhatsApp, factory address, business hours, and interactive enquiry form.",
+  alternates: { canonical: "/contact" },
 };
 
 export default async function ContactPage() {

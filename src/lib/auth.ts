@@ -2,13 +2,23 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const DEV_JWT_SECRET = "raj-agro-secret-jwt-token-key-2026-production-change-me";
 const AUTH_COOKIE_NAME = "rajagro_admin_token";
 
-function getJwtSecret() {
-  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
-  if (process.env.NODE_ENV !== "production") return DEV_JWT_SECRET;
-  throw new Error("JWT_SECRET must be configured in production.");
+/**
+ * The signing secret comes from the environment only — never from source.
+ * There is deliberately no hardcoded fallback: a committed default secret is
+ * a forgeable-token risk, and a per-process random one would not match the
+ * secret the edge middleware verifies with. Set JWT_SECRET in `.env.local`
+ * (see `.env.example`).
+ */
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error(
+      "JWT_SECRET is not configured. Add it to .env.local before using admin authentication."
+    );
+  }
+  return secret;
 }
 
 export interface JWTPayload {

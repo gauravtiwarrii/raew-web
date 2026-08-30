@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
 import {
   LayoutDashboard,
@@ -20,9 +19,11 @@ export const metadata = {
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getAuthSession();
 
-  // If in login route, return raw children without sidebar
+  // No session means we are on /admin/login — every other /admin/* path is
+  // redirected there by `middleware.ts` before this layout renders. So this
+  // branch is the login screen: chrome-less by design, not an unguarded route.
+  // (`redirect` was imported here but never called; the gate is the middleware.)
   if (!session) {
-    // Session protection
     return <div className="min-h-screen bg-slate-950">{children}</div>;
   }
 

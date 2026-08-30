@@ -50,7 +50,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
     specifications: "{\n  \"Working Width\": \"6 ft\",\n  \"Tractor Power\": \"45 HP\",\n  \"Blades\": \" boron steel\"\n}",
     features: "[\"Heavy duty boron steel blades\", \"Multi-speed gearbox\"]",
     applications: "[\"Seedbed preparation\", \"Stubble mulching\"]",
-    image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
+    image: "",
     priceDisplay: "Price on Request",
     availability: "In Stock",
     featured: false,
@@ -73,7 +73,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
       specifications: "{\n  \"Working Width\": \"6 ft\",\n  \"Tractor Power\": \"45 HP\",\n  \"Blades\": \" boron steel\"\n}",
       features: "[\"Heavy duty boron steel blades\", \"Multi-speed gearbox\"]",
       applications: "[\"Seedbed preparation\", \"Stubble mulching\"]",
-      image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80",
+      image: "",
       priceDisplay: "Price on Request",
       availability: "In Stock",
       featured: false,
@@ -239,7 +239,18 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   <td className="p-3.5">
                     <div className="flex items-center space-x-3">
                       <div className="relative w-12 h-10 rounded-lg overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
-                        <Image src={product.image} alt={product.name} fill className="object-cover" />
+                        {/* Only guards against an empty value, which next/image
+                            throws on. Stock URLs are shown here on purpose —
+                            the admin needs to see what is actually stored so it
+                            can be replaced, even though the public site hides
+                            it (see lib/images.ts). */}
+                        {product.image ? (
+                          <Image src={product.image} alt={product.name} fill className="object-cover" />
+                        ) : (
+                          <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-gray-600">
+                            No image
+                          </span>
+                        )}
                       </div>
                       <div>
                         <span className="font-bold text-white block">{product.name}</span>

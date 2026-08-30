@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const AUTH_COOKIE_NAME = "rajagro_admin_token";
-const DEV_JWT_SECRET = "raj-agro-secret-jwt-token-key-2026-production-change-me";
 
+/**
+ * Secret comes from the environment only — no hardcoded fallback. If it is
+ * missing, verification fails closed and the request is redirected to login
+ * rather than silently trusting a well-known default. Must be the same value
+ * `src/lib/auth.ts` signs with. Set JWT_SECRET in `.env.local`.
+ */
 function getJwtSecret() {
-  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
-  if (process.env.NODE_ENV !== "production") return DEV_JWT_SECRET;
-  return "";
+  return process.env.JWT_SECRET ?? "";
 }
 
 function base64UrlToBytes(value: string) {

@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "home": "Home",
+    "aboutUs": "About Us",
+    "products": "Products",
+    "categories": "Categories",
+    "services": "Services",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "getQuote": "Get a Quote",
+    "quote": "Quote",
+    "requestQuote": "Request a Quote",
+    "whatsapp": "Chat on WhatsApp"
+  },
+  "hero": {
+    "title": "Premium Agricultural Machinery Built for Indian Fields",
+    "subtitle": "Reliable agricultural implements engineered for performance, durability and demanding farming conditions."
+  },
+  "trustBar": {
+    "title": "Why Choose Us",
+    "items": [
+      "Direct From the Manufacturer",
+      "Custom Engineering Solutions",
+      "GST Registered Business",
+      "Built in Mirzapur, Uttar Pradesh",
+      "Direct Factory Pricing",
+      "24/7 Customer Support"
+    ]
+  },
+  "showcase": {
+    "title": "Our Premium Machinery",
+    "subtitle": "Premium Machinery Showcase",
+    "viewAll": "View All Machinery"
+  },
+  "productDetail": {
+    "requestQuotation": "Request Quotation",
+    "enquireWhatsApp": "Enquire on WhatsApp",
+    "callNow": "Call Now",
+    "contactSales": "Contact Sales Team for Custom Specifications",
+    "warranty": "Warranty Terms With Every Quote",
+    "spareParts": "Direct Factory Spare Parts",
+    "description": "Machine Description & Construction",
+    "features": "Key Engineering Highlights",
+    "applications": "Suitable Farm & Industry Applications",
+    "specifications": "Technical Specifications",
+    "relatedProducts": "Related Machinery in {category}",
+    "customSpecs": "Contact factory for custom technical specifications."
+  },
+  "quoteForm": {
+    "title": "Request a Machinery Quotation",
+    "subtitle": "Submit your machinery parameters, required quantities, and farm location below for direct factory pricing.",
+    "stepper": {
+      "step1": "Step 1: Select Machinery",
+      "step2": "Step 2: Requirements",
+      "step3": "Step 3: Location",
+      "step4": "Step 4: Contact",
+      "step5": "Step 5: Additional Details"
+    },
+    "step1": {
+      "productTitle": "Target Product / Equipment *",
+      "selectEquipment": "Select Equipment",
+      "customAgriMachine": "Custom Agricultural Machine",
+      "customEngEquipment": "Custom Engineering Equipment"
+    },
+    "step2": {
+      "quantity": "Required Quantity *",
+      "workingWidth": "Working Width (inches)",
+      "workingWidthPlaceholder": "e.g. 60, 72, 84",
+      "application": "Intended Application",
+      "applicationPlaceholder": "e.g. Tilling, Harvesting, Leveling",
+      "specificReq": "Specific Requirements / Tractor HP *",
+      "specificReqPlaceholder": "Please state tractor horsepower (e.g., 50 HP), preferred working width, or customized specs..."
+    },
+    "step3": {
+      "district": "District / City *",
+      "districtPlaceholder": "e.g. Moga, Ludhiana",
+      "state": "State *",
+      "statePlaceholder": "e.g. Punjab, Haryana",
+      "pinCode": "PIN Code *",
+      "pinCodePlaceholder": "e.g. 142001"
+    },
+    "step4": {
+      "fullName": "Full Name *",
+      "fullNamePlaceholder": "e.g. Gurpreet Singh",
+      "company": "Company / Farm / Agency",
+      "companyPlaceholder": "e.g. Raj Agro Farms",
+      "phone": "Mobile / Phone Number *",
+      "phonePlaceholder": "7651861335",
+      "whatsapp": "WhatsApp Number",
+      "whatsappPlaceholder": "Optional - for direct WhatsApp chat",
+      "email": "Email Address",
+      "emailPlaceholder": "name@example.com"
+    },
+    "step5": {
+      "additionalNotes": "Additional Requirements / Notes",
+      "additionalNotesPlaceholder": "Any additional specifications, drawings, or special instructions...",
+      "uploadTitle": "Upload Document / Image (Optional)",
+      "uploadFormats": "Supported formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB)",
+      "previous": "Previous Step",
+      "submit": "Submit Quotation Request",
+      "submitting": "Submitting..."
+    },
+    "success": {
+      "title": "Quotation Request Submitted!",
+      "message": "Your quotation request for <span class=\"font-bold\">{product}</span> has been saved in our system. Our engineering sales lead will contact you with formal pricing details.",
+      "followUp": "Follow Up via WhatsApp",
+      "anotherQuote": "Request Another Quote"
+    }
+  },
+  "contact": {
+    "title": "Contact M/s Raj Agro Engineering Works",
+    "subtitle": "Reach our sales and engineering support team directly via phone, WhatsApp, or the enquiry form below.",
+    "office": "Factory & Sales Office",
+    "address": "Address",
+    "phone": "Phone Numbers",
+    "email": "Email Contact",
+    "hours": "Working Hours",
+    "whatsapp": "Chat Instantly on WhatsApp",
+    "formTitle": "Send an Enquiry",
+    "formSubtitle": "Fill out your machinery requirement and our team will get back to you promptly.",
+    "website": "Website",
+    "name": "Your Full Name *",
+    "namePlaceholder": "e.g. Ramesh Kumar",
+    "company": "Company / Farm Name",
+    "companyPlaceholder": "e.g. Green Valley Agro",
+    "phoneLabel": "Phone Number *",
+    "phonePlaceholder": "7651861335",
+    "location": "City / District / State *",
+    "locationPlaceholder": "e.g. Ludhiana, Punjab",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "name@example.com",
+    "messageLabel": "Requirement Details *",
+    "messagePlaceholder": "Specify machinery models required, quantity, tractor HP, or custom fabrication needs...",
+    "submit": "Submit Enquiry",
+    "submitting": "Submitting Enquiry...",
+    "successTitle": "Enquiry Received Successfully!",
+    "successMessage": "Thank you for contacting M/s Raj Agro Engineering Works. Our technical sales representative will respond to your query shortly.",
+    "sendAnother": "Send Another Message"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "newsletter": "Newsletter",
+    "newsletterPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "copyright": "© {year} M/s Raj Agro Engineering Works. All rights reserved."
+  },
+  "language": {
+    "english": "English",
+    "hindi": "हिन्दी",
+    "switcherLabel": "Language"
+  }
+}

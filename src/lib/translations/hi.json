@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "home": "होम",
+    "aboutUs": "हमारे बारे में",
+    "products": "उत्पाद",
+    "categories": "श्रेणियाँ",
+    "services": "सेवाएँ",
+    "gallery": "गैलरी",
+    "contact": "संपर्क",
+    "getQuote": "एक उद्धरण प्राप्त करें",
+    "quote": "उद्धरण",
+    "requestQuote": "एक उद्धरण मांगें",
+    "whatsapp": "व्हाट्सएप पर चैट"
+  },
+  "hero": {
+    "title": "भारतीय खेतों के लिए निर्मित प्रीमियम कृषि मशीनरी",
+    "subtitle": "प्रदर्शन, टिकाऊपन और मांग वाली कृषि स्थितियों के लिए इंजीनियर किया गया विश्वसनीय कृषि उपकरण।"
+  },
+  "trustBar": {
+    "title": "हम क्यों चुनें",
+    "items": [
+      "सीधे निर्माता से",
+      "कस्टम इंजीनियरिंग समाधान",
+      "जीएसटी पंजीकृत व्यवसाय",
+      "मिर्ज़ापुर, उत्तर प्रदेश में निर्मित",
+      "डायरेक्ट फैक्टरी प्राइसिंग",
+      "24/7 ग्राहक समर्थन"
+    ]
+  },
+  "showcase": {
+    "title": "हमारा प्रीमियम मशीनरी",
+    "subtitle": "प्रीमियम मशीनरी शोकेस",
+    "viewAll": "सभी मशीनरी देखें"
+  },
+  "productDetail": {
+    "requestQuotation": "उद्धरण का अनुरोध करें",
+    "enquireWhatsApp": "व्हाट्सएप पर पूछताछ करें",
+    "callNow": "अभी कॉल करें",
+    "contactSales": "कस्टम स्पेसिफिकेशन के लिए बिक्री टीम से संपर्क करें",
+    "warranty": "हर कोटेशन के साथ वारंटी की शर्तें",
+    "spareParts": "डायरेक्ट फैक्टरी स्पेयर पार्ट्स",
+    "description": "मशीन विवरण एवं निर्माण",
+    "features": "मुख्य इंजीनियरिंग हाइलाइट्स",
+    "applications": "उपयुक्त खेत एवं उद्योग अनुप्रयोग",
+    "specifications": "तकनीकी स्पेसिफिकेशन",
+    "relatedProducts": "{category} से संबंधित मशीनरी",
+    "customSpecs": "कस्टम तकनीकी स्पेसिफिकेशन के लिए फैक्टरी से संपर्क करें।"
+  },
+  "quoteForm": {
+    "title": "कृषि मशीनरी का उद्धरण मांगें",
+    "subtitle": "सीधी फैक्टरियल मूल्य के लिए अपनी मशीनरी के параметры, आवश्यक मात्रा और खेत की स्थिति नीचे सबमिट करें।",
+    "stepper": {
+      "step1": "चरण 1: मशीनरी चुनें",
+      "step2": "चरण 2: आवश्यकताएँ",
+      "step3": "चरण 3: स्थान",
+      "step4": "चरण 4: संपर्क विवरण",
+      "step5": "चरण 5: अतिरिक्त विवरण"
+    },
+    "step1": {
+      "productTitle": "लक्ष्य उत्पाद / उपकरण *",
+      "selectEquipment": "उपकरण चुनें",
+      "customAgriMachine": "कस्टम कृषि मशीन",
+      "customEngEquipment": "कस्टम इंजीनियरिंग उपकरण"
+    },
+    "step2": {
+      "quantity": "आवश्यक मात्रा *",
+      "workingWidth": "कार्यात्मक चौड़ाई (इंच में)",
+      "workingWidthPlaceholder": "जैसे 60, 72, 84",
+      "application": "इरादा किया गया अनुप्रयोग",
+      "applicationPlaceholder": "जैसे जुताई, कटाई, समतलीकरण",
+      "specificReq": "विशेष आवश्यकताएँ / ट्रैक्टर एचपी *",
+      "specificReqPlaceholder": "कृपया ट्रैक्टर अश्वशक्ति (जैसे 50 एचपी), पसंदीदा कार्यात्मक चौड़ाई, या कस्टम विनिर्देश बताएँ..."
+    },
+    "step3": {
+      "district": "जिला / शहर *",
+      "districtPlaceholder": "जैसे मोगा, लुधियाना",
+      "state": "राज्य *",
+      "statePlaceholder": "जैसे पंजाब, हरियाणा",
+      "pinCode": "पिन कोड *",
+      "pinCodePlaceholder": "जैसे 142001"
+    },
+    "step4": {
+      "fullName": "पूरा नाम *",
+      "fullNamePlaceholder": "जैसे गुरप्रीत सिंह",
+      "company": "कम्पनी / फार्म / एजेंसी",
+      "companyPlaceholder": "जैसे राज agro फार्म्स",
+      "phone": "मोबाइल / फोन नंबर *",
+      "phonePlaceholder": "7651861335",
+      "whatsapp": "व्हाट्सएप नंबर",
+      "whatsappPlaceholder": "वैकल्पिक - सीधे व्हाट्सएप चैट के लिए",
+      "email": "ईमेल पता",
+      "emailPlaceholder": "name@example.com"
+    },
+    "step5": {
+      "additionalNotes": "अतिरिक्त आवश्यकताएँ / नोट्स",
+      "additionalNotesPlaceholder": "किसी भी अतिरिक्त विनिर्देश, चित्र, या special निर्देश...",
+      "uploadTitle": "दस्तावेज़ / चित्र अपलोड करें (वैकल्पिक)",
+      "uploadFormats": "समर्थित प्रारूप: PDF, JPG, PNG, DOC, DOCX (अधिकतम 5MB)",
+      "previous": "पिछला चरण",
+      "submit": "उद्धरण अनुरोध जमा करें",
+      "submitting": " 제출 중..."
+    },
+    "success": {
+      "title": "उद्धरण अनुरोध सफलतापूर्वक जमा किया गया!",
+      "message": "<span class=\"font-bold\">{product}</span> के लिए आपका उद्धरण अनुरोध हमारे सिस्टम में सहेजा गया है। हमारी इंजीनियरिंग बिक्री लीड आपको औपचारिक मूल्य विवरण से संपर्क करेगी।",
+      "followUp": "व्हाट्सएप से फॉलो अप करें",
+      "anotherQuote": "दूसरा उद्धरण मांगें"
+    }
+  },
+  "contact": {
+    "title": "M/s राज agro इंजीनियरिंग वर्क्स से संपर्क करें",
+    "subtitle": "हमारे बिक्री और इंजीनियरिंग समर्थन团队 से सीधे फोन, व्हाट्सएप, या नीचे दिए गए enquiry form के माध्यम से संपर्क करें।",
+    "office": "कार्यालय & बिक्री कार्यालय",
+    "address": "पता",
+    "phone": "फ़ोन नंबर",
+    "email": "ईमेल संपर्क",
+    "hours": "कार्य घंटे",
+    "whatsapp": "व्हाट्सएप पर तुरंत चैट करें",
+    "formTitle": "एक enquiry भेजें",
+    "formSubtitle": "अपनी मशीनरी requirement भरें और हमारी टीम जल्द ही आप तक पहुंचेगी।",
+    "website": "वेबसाइट",
+    "name": "आपका पूरा नाम *",
+    "namePlaceholder": "जैसे रमेश कुमार",
+    "company": "कम्पनी / फार्म名称",
+    "companyPlaceholder": "जैसे greेन वैली agro",
+    "phoneLabel": "फ़ोन नंबर *",
+    "phonePlaceholder": "7651861335",
+    "location": "शहर / जिला / राज्य *",
+    "locationPlaceholder": "जैसे लुधियाना, पंजाब",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "name@example.com",
+    "messageLabel": "आवश्यकता विवरण *",
+    "messagePlaceholder": "आवश्यक मशीनरी मॉडल, मात्रा, ट्रैक्टर एचपी, या कस्टम निर्माण की आवश्यकता बताएँ...",
+    "submit": "enquiry जमा करें",
+    "submitting": "enquiry जमा कर रहा है...",
+    "successTitle": "Enquiry प्राप्त हुआ!",
+    "successMessage": "M/s राज agro इंजीनियरिंग वर्क्स से संपर्क करने के लिए thank you. हमारा तकनीकी बिक्री प्रतिनिधि आपकी पूछताछ का उत्तर जल्द देगा।",
+    "sendAnother": "दूसरा संदेश भेजें"
+  },
+  "footer": {
+    "quickLinks": "त्वरित लिंक",
+    "followUs": "हमारा पालन करें",
+    "newsletter": "न्यूज़लेटर",
+    "newsletterPlaceholder": "अपना ईमेल दर्ज करें",
+    "subscribe": "सदस्यता लें",
+    "copyright": "© {year} M/s राज agro इंजीनियरिंग वर्क्स। सभी अधिकार सुरक्षित।"
+  },
+  "language": {
+    "english": "English",
+    "hindi": "हिन्दी",
+    "switcherLabel": "भाषा"
+  }
+}

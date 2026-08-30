@@ -25,7 +25,7 @@ export default function GalleryManager({ initialItems }: GalleryManagerProps) {
   const [formData, setFormData] = useState({
     title: "",
     category: "Machinery",
-    imageUrl: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "",
     description: "",
     active: true,
   });
@@ -49,7 +49,7 @@ export default function GalleryManager({ initialItems }: GalleryManagerProps) {
       setFormData({
         title: "",
         category: "Machinery",
-        imageUrl: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+        imageUrl: "",
         description: "",
         active: true,
       });
@@ -92,7 +92,15 @@ export default function GalleryManager({ initialItems }: GalleryManagerProps) {
         {items.map((item) => (
           <div key={item.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden space-y-3 p-3">
             <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-slate-950">
-              <Image src={item.imageUrl} alt={item.title} fill className="object-cover" />
+              {/* Guarded only against an empty value — next/image throws on "".
+                  Stock URLs stay visible in admin so they can be replaced. */}
+              {item.imageUrl ? (
+                <Image src={item.imageUrl} alt={item.title} fill className="object-cover" />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                  No image
+                </span>
+              )}
               <span className="absolute top-2 right-2 bg-slate-950/80 text-amber-400 font-mono text-[10px] px-2 py-0.5 rounded-md">
                 {item.category}
               </span>

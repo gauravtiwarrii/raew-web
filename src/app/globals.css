@@ -1,290 +1,1038 @@
 @import "tailwindcss";
 
+/* ════════════════════════════════════════════════════════════════
+   M/s RAJ AGRO ENGINEERING WORKS — INDUSTRIAL DESIGN SYSTEM
+   ────────────────────────────────────────────────────────────────
+   Direction: Agricultural Engineering + Industrial Manufacturing
+              + Reliability + Precision.
+
+   Palette rationale: deep charcoal/near-black structure, steel-grey
+   neutrals, off-white paper, and a single strategic agricultural
+   green accent. Green is reserved for action and confirmation only —
+   it is never decorative. Steel carries secondary actions so the
+   call-to-action hierarchy stays unambiguous.
+
+   Use the SEMANTIC tokens (--bg, --surface, --text, --accent, --border,
+   --focus …) in new code, or the @theme scales below (ink-*, steel-*,
+   agri-*, paper-*) when a specific tier is needed. A legacy alias layer
+   (--gold-*, --forest-*, --charcoal-*, --emerald-*) used to live at the
+   bottom of this file to carry the old components through the migration;
+   it has been removed now that nothing references it.
+   ════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Ink: deep charcoal → near-black. Structure and depth. ── */
+  --color-ink-950: #08090b;
+  --color-ink-900: #0e1013;
+  --color-ink-800: #14171b;
+  --color-ink-700: #1c2025;
+  --color-ink-600: #262b31;
+  --color-ink-500: #33393f;
+
+  /* ── Cinema: the deep end, for full-bleed dramatic sections. ──
+     Distinct from ink-*, which is UI chrome. These three are stage
+     blacks: `void` is the backdrop a lit object floats against,
+     `stage` the mid ground, `riser` the nearest plane. Keeping them
+     separate from the ink ramp stops dramatic sections and ordinary
+     dark panels from converging on the same flat grey. */
+  --color-cinema-void: #070707;
+  --color-cinema-stage: #0b0d0c;
+  --color-cinema-riser: #111413;
+
+  /* ── Steel: industrial neutrals. Text, borders, secondary UI. ── */
+  --color-steel-50: #f8fafc;
+  --color-steel-100: #f1f5f9;
+  --color-steel-200: #e2e8f0;
+  --color-steel-300: #cbd5e1;
+  --color-steel-400: #94a3b8;
+  --color-steel-500: #64748b;
+  --color-steel-600: #475569;
+  --color-steel-700: #334155;
+  --color-steel-800: #1e293b;
+  --color-steel-900: #0f172a;
+  --color-steel-950: #020617;
+
+  /* ── Agri: the single strategic accent. Action + confirmation. ── */
+  --color-agri-50: #ecfdf5;
+  --color-agri-100: #d1fae5;
+  --color-agri-200: #a7f3d0;
+  --color-agri-300: #6ee7b7;
+  --color-agri-400: #34d399;
+  --color-agri-500: #10b981;
+  --color-agri-600: #059669;
+  --color-agri-700: #047857;
+  --color-agri-800: #065f46;
+  --color-agri-900: #064e3b;
+  --color-agri-950: #022c22;
+
+  /* ── Paper: off-white surfaces. ── */
+  --color-paper: #f7f8f9;
+  --color-paper-2: #eff1f3;
+  --color-paper-3: #e4e7ea;
+
+  /* ── Signal colours ── */
+  --color-warn-500: #d97706;
+  --color-warn-50: #fffbeb;
+  --color-danger-500: #dc2626;
+  --color-danger-600: #b91c1c;
+  --color-danger-50: #fef2f2;
+
+  /* ── Typography ── */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono-technical), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Engineered type scale — tight, deliberate, no fractional drift */
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.14em;
+
+  /* ── Display scale: the dramatic tier. ──
+     Fluid via clamp() so 320 → 1920 needs no breakpoint juggling.
+
+     The minima are not arbitrary. At 320px the content box is
+     320 − 2×1rem gutter = 288px. Uppercase Space Grotesk Bold runs
+     roughly 0.66em per glyph, so a 10-character word (`ENGINEERED`,
+     the longest line in the hero) occupies about 10 × 0.66 × size.
+     At the 2rem floor that is ~211px — inside 288px with room to
+     spare. Raising the floor to 2.75rem would push it to ~290px and
+     overflow, which is exactly how a "huge type" redesign ends up
+     with a horizontal scrollbar on a phone. Check this arithmetic
+     before increasing any minimum. */
+  --text-mega: clamp(2rem, 7.5vw, 5.5rem);
+  --text-mega--line-height: 0.9;
+  --text-mega--letter-spacing: -0.035em;
+
+  /* ── Colossal: the viewport-owning tier. ──
+     One step above --text-mega, for the two or three places on the site
+     where a single word IS the composition rather than a heading above
+     it. This is the "typography as architecture" tier.
+
+     The arithmetic that sets the 2.25rem floor, using the same
+     0.66em-per-glyph measure for uppercase Space Grotesk Bold as
+     --text-mega above: the longest word set at this size anywhere is
+     `PRECISION` (9 characters). 9 × 0.66 × 2.25rem = 13.4rem ≈ 214px,
+     inside the 288px content box at 320px. The tracking here is tighter
+     (-0.05em) than --text-mega, which claws back a further ~6%: at these
+     sizes default spacing reads as gappy, because tracking should shrink
+     as size grows.
+
+     The 13rem ceiling is NOT arbitrary either. 13rem × 0.9 line-height =
+     187px per line, so three lines is 561px — which still fits inside a
+     720px-tall viewport with room for an eyebrow and a CTA. Raising it
+     means a three-line composition no longer fits on a laptop.
+
+     Rule for use: NEVER on more than one element per viewport, and never
+     on a string longer than about 12 characters. This tier stops working
+     the moment it is used twice. */
+  --text-colossal: clamp(2.25rem, 11vw, 13rem);
+  --text-colossal--line-height: 0.86;
+  --text-colossal--letter-spacing: -0.05em;
+
+  /* ── Numeral-XL: oversized index digits. ──
+     For the two-digit section numbers in the product gallery and process
+     timeline, where the number is a compositional element rather than a
+     label. Mono face keeps digits tabular so a column of them aligns.
+     Two digits at the 9rem ceiling is ~10rem wide — safe in any column
+     wider than 176px. */
+  --text-numeral-xl: clamp(3.5rem, 9vw, 9rem);
+  --text-numeral-xl--line-height: 0.78;
+  --text-numeral-xl--letter-spacing: -0.045em;
+
+  --text-display-1: clamp(1.875rem, 5vw, 3.75rem);
+  --text-display-1--line-height: 0.98;
+  --text-display-1--letter-spacing: -0.03em;
+
+  --text-display-2: clamp(1.625rem, 3.6vw, 2.75rem);
+  --text-display-2--line-height: 1.05;
+  --text-display-2--letter-spacing: -0.025em;
+
+  /* Oversized step/index numerals — set on the mono face so digits
+     stay tabular and columns of them line up. */
+  --text-numeral: clamp(2.5rem, 6vw, 5rem);
+  --text-numeral--line-height: 0.82;
+  --text-numeral--letter-spacing: -0.04em;
+
+  /* CAD-style annotation micro-type. */
+  --text-tech: 0.625rem;
+  --text-tech--line-height: 1.1;
+  --text-tech--letter-spacing: 0.18em;
+
+  /* ── Radii: machined, not pill-soft ── */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  /* ── Elevation: tight and physical, never fluffy ── */
+  --shadow-hairline: 0 0 0 1px rgb(15 23 42 / 0.06);
+  --shadow-panel: 0 1px 2px rgb(8 9 11 / 0.04), 0 4px 12px -4px rgb(8 9 11 / 0.08);
+  --shadow-raised: 0 2px 4px rgb(8 9 11 / 0.05), 0 12px 24px -8px rgb(8 9 11 / 0.12);
+  --shadow-inset-top: inset 0 1px 0 0 rgb(255 255 255 / 0.06);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SEMANTIC LAYER — use these in new code
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  --bg: #f7f8f9;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-3: #e2e8f0;
+  --surface-inverse: #0e1013;
+  /* One step up from --surface-inverse, for hover/raised states on dark
+     panels. Same value as the legacy --charcoal-800 it replaces.
+
+     Currently referenced nowhere — kept deliberately, not by oversight. The
+     dark surfaces that used to need it now live under `.cinema`, which has
+     its own three-step ramp (riser / stage / void). This is the second step
+     of the OTHER dark scope, `.on-dark` on --surface-inverse, which the
+     utility bar and the inner-page hero bands still use. If a raised state
+     is ever needed on one of those, this is the value; if `.on-dark` itself
+     is ever retired, delete this with it. Before using it as a text ground,
+     measure: --text-inverse-muted #94a3b8 on #14171b is about 7.0:1, and
+     --accent #047857 as TEXT on it is about 3.3:1 and therefore fails. */
+  --surface-inverse-2: #14171b;
+
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-inverse: #262b31;
+
+  --text: #0f172a;
+  --text-muted: #475569;
+  /* #64748b measured 4.48:1 on paper — 0.02 short of AA. Nudged
+     darker so the 11px `.spec-label` micro-type stays compliant. */
+  --text-subtle: #616f83;
+  --text-inverse: #f8fafc;
+  --text-inverse-muted: #94a3b8;
+
+  /* Accent — green is action. Two variants for the two backgrounds.
+     `--accent` is deliberately the darker #047857 rather than the
+     brighter #059669: white label text on #059669 measures only
+     3.77:1, which fails WCAG AA for normal text. #047857 gives
+     5.48:1. Use `--accent-bright` only for graphics/marks, where
+     the 3:1 non-text threshold applies (it measures 3.54:1). */
+  --accent: #047857;
+  --accent-hover: #065f46;
+  --accent-active: #064e3b;
+  --accent-fg: #ffffff;
+  --accent-bright: #059669;
+  --accent-on-dark: #34d399;
+  --accent-on-dark-strong: #6ee7b7;
+  --accent-quiet-bg: #ecfdf5;
+  --accent-quiet-border: #a7f3d0;
+  --accent-quiet-text: #047857;
+
+  /* Focus must clear 3:1 against its background (WCAG 2.2 SC 1.4.11).
+     #10b981 on paper is only 2.39:1, so the light-surface ring uses
+     the darker green and dark surfaces use the mint. */
+  --focus: #047857;
+  --focus-inverse: #6ee7b7;
+
+  /* Layout rhythm */
+  --shell: 80rem;
+  --gutter: 1rem;
+
+  /* ════════════════════════════════════════════════════════════
+     CINEMA LAYER — for full-bleed dramatic sections only
+     ════════════════════════════════════════════════════════════
+     `--surface-inverse` (#0e1013) is the dark UI panel colour and
+     stays as it is. These are the stage blacks: deeper, and layered
+     so a lit object can appear to float in front of a backdrop
+     rather than sit on a flat fill. */
+  --cinema-void: #070707;
+  --cinema-stage: #0b0d0c;
+  --cinema-riser: #111413;
+  --cinema-edge: #1e2422;
+
+  /* Highlight green — the "electric" tier the brief asks for, used
+     extremely sparingly and never as a fill behind text.
+     #a3e635 on --cinema-void measures 13.36:1, so it is safe as
+     text; it is restricted to single words and technical marks
+     because its job is emphasis, not decoration. */
+  --accent-highlight: #a3e635;
+
+  /* Elevation on near-black. A black drop shadow is invisible against
+     #070707, so depth on dark comes from a light top edge (a rim of
+     reflected light) plus a wide ambient shadow that darkens rather
+     than blurs. This is why dark panels need their own ramp instead of
+     reusing --shadow-panel. */
+  --shadow-lift-dark:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.07),
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 18px 40px -12px rgb(0 0 0 / 0.85);
+  --shadow-float-dark:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.1),
+    0 2px 4px rgb(0 0 0 / 0.5),
+    0 40px 80px -24px rgb(0 0 0 / 0.9);
+
+  /* Motion: one easing vocabulary, so nothing feels borrowed.
+     `--ease-out-quint` for entrances, `--ease-tech` for mechanical
+     movement (it decelerates hard, like a servo settling). */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-tech: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  :root { --gutter: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 2rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DARK SCOPES — token rebinding, not overrides
+   ════════════════════════════════════════════════════════════════
+   Both classes below work by re-pointing semantic tokens for their
+   subtree. That means a component written once against `var(--text)`
+   / `var(--border)` / `var(--surface)` renders correctly on light and
+   dark without a single `dark:` variant or a `dark` prop. Rebinding a
+   custom property on an element beats the `:root` value for that
+   subtree regardless of source order, because a declaration on the
+   element itself outranks an inherited one.
+
+   ── Why these two sit in `@layer components` ──
+   Tailwind v4's `@import "tailwindcss"` declares
+   `@layer theme, base, components, utilities` and emits every generated
+   utility into `utilities`. Unlayered author CSS outranks ALL layered
+   CSS, so a plain `.cinema { background-color: … }` out here would beat
+   a `bg-[var(--cinema-stage)]` utility on the same element — silently,
+   with no specificity signal to warn you. Three sections on the
+   homepage do exactly that pairing to step the dark ramp
+   riser → stage → void, and the footer sets its own default text colour
+   the same way; all four were resolving to `--cinema-void` / white
+   instead. Layering the scope restores the model every call site was
+   written against: the class supplies the default, a utility on the
+   same element overrides it.
+
+   The rule for this file: any declaration a call site is expected to be
+   able to override with a Tailwind utility MUST be inside
+   `@layer components`. Token rebinds (the `--*` declarations below) do
+   not strictly need it — no utility sets them — but they are wrapped
+   with the rest so the scope stays one readable block. */
+
+@layer components {
+
+/* `.on-dark` is the EXISTING scope, already on live sections, so it gets
+   exactly one corrective rebind and nothing else.
+
+   The bug it fixes: `.spec-label` falls back to `var(--text-subtle)`,
+   which is #616f83 — a value chosen for white paper. On dark it
+   measures 3.73:1 on --surface-inverse and 3.20:1 on the top of
+   `.steel-plate`, i.e. an AA failure for 11px text everywhere a
+   spec label appears in a dark section without an explicit colour
+   override. #7c8794 is the lightest value that still reads as
+   "third-tier, quieter than muted" while clearing 4.5:1 on the
+   lightest dark surface we have (5.07:1 on --cinema-riser).
+
+   Deliberately NOT rebound here: --surface. Existing dark sections may
+   contain intentionally white cards, and flipping --surface underneath
+   them would change live layouts that cannot be visually checked from
+   this environment. `.cinema` below is new, so it can be complete. */
+.on-dark {
+  --text-subtle: #7c8794;
+}
+
+/* `.cinema` is the full stage scope for the dramatic sections. */
+.cinema {
+  background-color: var(--cinema-void);
+  color: var(--text-inverse);
+
+  --text: var(--text-inverse);
+  --text-muted: var(--text-inverse-muted);
+  --text-subtle: #7c8794;
+
+  --surface: var(--cinema-riser);
+  --surface-2: var(--cinema-stage);
+  --surface-3: #171b1a;
+
+  --border: var(--cinema-edge);
+  --border-strong: #39423f;
+
+  /* A black drop shadow does nothing on #070707, so `.panel` and
+     `.lift` are re-pointed at the dark elevation ramp. Both read the
+     token through `var()`, so they inherit the correct physics here
+     with no per-call-site change. */
+  --shadow-panel: var(--shadow-lift-dark);
+  --shadow-raised: var(--shadow-float-dark);
+  --shadow-hairline: 0 0 0 1px rgb(255 255 255 / 0.06);
+
+  /* Makes the base `:focus-visible` rule resolve to the mint ring. */
+  --focus: var(--focus-inverse);
+
+  /* --accent is NOT rebound, and that is the important part. It is a
+     BACKGROUND that carries white label text (#047857 + white =
+     5.48:1). Re-pointing it at #34d399 to "look right on dark" would
+     drop that pairing to roughly 1.9:1. Green as text on a stage black
+     must come from --accent-on-dark (10.48:1) instead. */
+}
+
+} /* @layer components — dark scopes */
+
+/* ════════════════════════════════════════════════════════════════
+   BASE
+   ════════════════════════════════════════════════════════════════ */
 @layer base {
-  :root {
-    /* ── Primary Brand Palette ── */
-    --gold-50: #fef9ec;
-    --gold-100: #fcefc5;
-    --gold-200: #f9df8c;
-    --gold-300: #f5c94e;
-    --gold-400: #f0b429;
-    --gold-500: #c78a2c;
-    --gold-600: #a16f1d;
-    --gold-700: #7b5519;
-    --gold-800: #5d4114;
-    --gold-900: #3a280d;
+  * {
+    border-color: var(--border);
+  }
 
-    --forest-50: #f0fdf4;
-    --forest-100: #dcfce7;
-    --forest-200: #bbf7d0;
-    --forest-300: #86efac;
-    --forest-400: #4ade80;
-    --forest-500: #22c55e;
-    --forest-600: #16a34a;
-    --forest-700: #166534;
-    --forest-800: #14532d;
-    --forest-900: #052e16;
-
-    --charcoal-950: #0a0a0a;
-    --charcoal-900: #111111;
-    --charcoal-800: #1a1a1a;
-    --charcoal-700: #262626;
-    --charcoal-600: #333333;
-
-    --offwhite: #faf8f5;
-    --cream: #f5f0e8;
+  html {
+    /* `clip` rather than `hidden`: contains stray overflow WITHOUT
+       breaking `position: sticky` on descendants (the header relies
+       on it). `overflow-x: hidden` here silently kills sticky. */
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem; /* clears the sticky header on anchors */
   }
 
   body {
-    background-color: var(--offwhite);
-    color: var(--charcoal-900);
-    overflow-x: hidden;
+    background-color: var(--bg);
+    color: var(--text);
+    font-feature-settings: "cv11", "ss01";
+    font-variant-numeric: tabular-nums lining-nums;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  /* Smooth scroll with reduced-motion respect */
-  html {
-    scroll-behavior: smooth;
+  /* Engineered heading defaults: tight tracking, no fluffy leading */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.022em;
+    text-wrap: balance;
   }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, high-contrast keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  /* Suppress the legacy `focus:outline-none` pattern from removing
+     keyboard affordance on form controls. */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  /* Dark surfaces need the lighter ring to stay visible */
+  .on-dark :focus-visible {
+    outline-color: var(--focus-inverse);
+  }
+
+  ::selection {
+    background-color: #a7f3d0;
+    color: #022c22;
+  }
+
+  /* Honour reduced-motion globally, including scroll behaviour */
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+    html { scroll-behavior: auto; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
 
-/* ── Custom Scrollbar ── */
-::-webkit-scrollbar {
-  width: 7px;
-}
-::-webkit-scrollbar-track {
-  background: var(--offwhite);
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--gold-500), var(--gold-700));
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--gold-400), var(--gold-600));
+/* ════════════════════════════════════════════════════════════════
+   LENIS SMOOTH-SCROLL INTEGRATION
+
+   `SmoothScrollProvider` adds `.smooth-scroll-active` to <html> once
+   Lenis is live, and removes it on teardown. Keyed off our own class
+   rather than Lenis's built-in `.lenis` / `.lenis-smooth`, which are
+   internal names that could not be verified in the environment this
+   was written in — and which would silently stop matching if renamed.
+
+   ── WHY THIS OVERRIDES BOTH SOURCES OF NATIVE SMOOTH SCROLL ──
+   Native smooth scrolling has to be off while Lenis interpolates, or
+   the browser and Lenis both animate scroll position and the result
+   stutters. It is currently set from TWO places:
+     • `html { scroll-behavior: smooth }` in @layer base, above
+     • `scroll-smooth`, a utility class on <html> in layout.tsx
+   This rule is UNLAYERED, and unlayered normal declarations outrank
+   every layer — so it already beats both without `!important`, and
+   specificity never enters into it. The `!important` is kept for one
+   narrower reason: the reduced-motion block in @layer base sets
+   `scroll-behavior: auto !important` on `*`, and important declarations
+   invert layer order with unlayered ranking LOWEST. Both rules set
+   `auto`, so there is no conflict today — but a normal declaration here
+   would be quietly outranked by any future important rule in a layer,
+   and this is not a property worth losing silently.
+
+   Both existing sources are deliberately left in place: they are the
+   correct behaviour whenever Lenis is NOT running, which is every touch
+   device, every reduced-motion user, and any session where the dynamic
+   import fails.
+
+   ── WHAT IS DELIBERATELY OMITTED FROM THE STOCK LENIS RESET ──
+   Lenis's recommended stylesheet also ships:
+     `html.lenis, html.lenis body { height: auto }`  — exists to undo
+       `height: 100%` resets. This project has none; body uses
+       `min-h-screen`. The stock rule is harmless but the `min-height`
+       companion often copied with it is not: zeroing body min-height
+       would drop the footer up the page on short routes.
+     `.lenis.lenis-smooth iframe { pointer-events: none }` — exists so
+       a wheel gesture over an iframe does not fall out of Lenis's
+       control. NOT included: it would make both Google Maps embeds
+       (page.tsx and contact/ContactClient.tsx) completely dead to
+       clicks and drags. Losing map interaction to smooth an edge case
+       in scrolling is the wrong trade. Use `data-lenis-prevent` on a
+       specific scroll container instead.
+   ════════════════════════════════════════════════════════════════ */
+html.smooth-scroll-active {
+  scroll-behavior: auto !important;
 }
 
-/* ── Keyframe Animations ── */
-@keyframes pulse-ring {
-  0% {
-    transform: scale(1);
+/* Opt an inner scroll container out of Lenis, so a wheel gesture inside
+   it scrolls the container and stops at its edge rather than passing
+   through to the page. */
+[data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ── Scrollbar: steel, not decorative ── */
+@media (pointer: fine) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--surface-2); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-steel-400);
+    border: 2px solid var(--surface-2);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   INDUSTRIAL UTILITIES
+   ════════════════════════════════════════════════════════════════ */
+
+/* Skip link — first tab stop, invisible until focused */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border-radius: 4px;
+  outline: 2px solid var(--focus-inverse);
+  outline-offset: 2px;
+}
+
+/* Page shell — consistent max width + responsive gutter */
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Technical eyebrow label (mono, tracked, uppercase) */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Spec key/value micro-label.
+
+   Layered for the same cascade reason as the dark scopes above: `color`
+   here is a DEFAULT, and eight call sites override it —
+   `spec-label text-[var(--accent-highlight)]` (the one lime mark in the
+   bento), `spec-label text-[var(--text-inverse-muted)]` (product page,
+   showcase frame), `spec-label text-[var(--accent-quiet-text)]`,
+   `spec-label text-[var(--accent-on-dark-strong)]`. Unlayered, this
+   declaration outranked every one of them and they all rendered as
+   #616f83 — a colour picked for white paper. */
+@layer components {
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+}
+
+/* Precision measurement grid — replaces the decorative dot field.
+   Reads as engineering drawing paper rather than generic "tech dots". */
+.blueprint-grid-fine {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.09) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+/* `.blueprint-grid` (the 0.13-alpha light-surface variant) and its
+   `.on-dark .blueprint-grid` companion were removed — no call site used the
+   base class; every one asks for `-fine` or `-dark` explicitly. */
+.blueprint-grid-dark {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.09) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Machined panel: hairline border + tight elevation + top light catch */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 10px);
+  box-shadow: var(--shadow-panel, 0 1px 2px rgb(8 9 11 / 0.04));
+}
+/* `.panel-dark` was removed as dead code — dark sections use `.steel-plate`
+   or `.panel` inside an `.on-dark` scope instead. */
+
+/* Steel plate gradient for dark sections */
+.steel-plate {
+  background:
+    radial-gradient(120% 80% at 50% 0%, #1c2025 0%, #0e1013 55%, #08090b 100%);
+}
+
+/* Single hairline rule with an accent tick — a drawing-sheet detail */
+.rule-tick {
+  position: relative;
+  border-top: 1px solid var(--border);
+}
+.rule-tick::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  /* a graphic mark, not text — the vivid green is allowed here */
+  background: var(--accent-bright);
+}
+
+/* ── Drawing-sheet table ──
+   The replacement for a grid of boxes. A spec table on a real drawing
+   sheet is not a set of cells with borders all round: it is a column of
+   rows separated by hairlines, with the label sitting small and tracked
+   above or beside the value. That is the form the box grids should have
+   been. The hairlines are the structure; the surface is the paper.
+
+   ── Two cascade decisions, both load-bearing ──
+   1. This block is inside `@layer components` because `.sheet-val` and
+      `.sheet-key` set `color`, and call sites need to override that with
+      a utility (a spec value on a dark ground wants
+      `sheet-val text-[var(--text-inverse)]`). Unlayered, the declaration
+      here would beat the utility silently. See the long note on the dark
+      scopes above — this is the same trap.
+   2. `.sheet-key` / `.sheet-val` are FLAT selectors, not
+      `.sheet-row .sheet-key`. A descendant selector scores 0,2,0 and
+      would outrank a 0,1,0 utility even from inside the same layer,
+      which defeats point 1. Being in the same layer is necessary but not
+      sufficient — the selector has to stay as weak as the utility. */
+@layer components {
+  .sheet {
+    display: flex;
+    flex-direction: column;
+  }
+  .sheet-row {
+    display: grid;
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-block: 1.125rem;
+    border-top: 1px solid var(--border);
+  }
+  .sheet-row:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .sheet-key {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding-top: 0.15rem;
+  }
+  .sheet-val {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+  /* Stacks below the `sm` breakpoint. Written as max-width rather than a
+     min-width override because the stacked form is the mobile default and
+     the two-column form is the enhancement. */
+  @media (max-width: 639px) {
+    .sheet-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.375rem;
+    }
+  }
+
+  /* ── Technical annotation note ──
+     A single line of micro-mono type with a tick, used next to a leader
+     line so the leader has something to point at. This is the "callout"
+     unit of the product gallery and the hero annotations. Layered for the
+     same reason as the sheet: `color` is a default here, and the callouts
+     appear on both stage black and paper. */
+  .hud-note {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: var(--text-inverse-muted);
+  }
+  .hud-note::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 1px;
+    background: currentColor;
     opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.8);
-    opacity: 0;
+    transform: translateY(-0.15em);
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+/* ── Leader line ──
+   A hairline that draws from a point to its annotation, paired with
+   `scaleX` for the "line draws itself" effect. Unlayered is correct here:
+   it sets no `color` of its own — it inherits via `currentColor`, so the
+   call site controls the colour by setting `color` on an ancestor or on
+   the element itself, with no cascade contest to lose. */
+.leader {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform-origin: left center;
+}
+
+/* ── Hero scroll track ──
+   The hero is a tall track wrapping a `sticky` stage: the stage holds still
+   for one extra viewport of scroll while the composition transforms — type
+   recedes, the machine comes to centre, annotations draw in — and then
+   releases into the section below. Same mechanism as
+   `products/ShowcaseStage`: native scroll, no pinning library, so trackpad
+   momentum, Page Down, Home/End and find-in-page all keep working.
+
+   ── Why the height lives in CSS and not in the component ──
+   A reduced-motion reader gets no transformation, so the extra travel would
+   be a screen and a bit of dead scroll past a frozen image — the track has
+   to collapse to exactly one viewport for them. The obvious way to do that
+   is to branch on `useReducedMotion()` and set the height inline, and it is
+   wrong: that hook returns `null` on the first render and resolves after
+   hydration, so the document height would change *after* first paint. That
+   is a layout shift on the tallest element on the page, and scroll-driven
+   shifts count toward CLS (Chrome does not set `hadRecentInput` for
+   continuous interactions). A media query has no such window — the correct
+   height is in the first byte of CSS, before anything paints.
+
+   ── `overflow-x: clip`, never `overflow: hidden` ──
+   `hidden` on any ancestor of a sticky element makes that ancestor a scroll
+   container, and sticky then resolves against a box with no scrollable
+   overflow, so it simply never sticks. `clip` does not create a scroll
+   container. It trims the oversized visual layers without quietly breaking
+   the one mechanism this whole section is built on. */
+@layer components {
+  .hero-track {
+    position: relative;
+    overflow-x: clip;
+    /* One viewport of stage, plus the distance the transformation is
+       scrubbed across. `svh`, not `vh`: `100vh` on iOS Safari is the
+       *expanded* viewport, which is what hides a hero's CTAs behind the URL
+       bar on first load. Kept as a sum rather than folded to `210svh` so it
+       stays legible which half is the stage and which is the travel. */
+    height: calc(100svh + 110svh);
   }
-  50% {
-    transform: translateY(-8px);
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-track {
+      height: 100svh;
+    }
   }
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+/* Machined chip. `.chip-accent` (the light-surface variant) was removed as dead
+   code; only the dark one is in use. */
+.chip-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  color: var(--text-inverse-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 4px;
+}
+
+/* Restrained interactive lift — 2px, not 6px. Physical, not floaty. */
+.lift {
+  transition: transform 180ms cubic-bezier(0.2, 0, 0.2, 1),
+              box-shadow 180ms cubic-bezier(0.2, 0, 0.2, 1),
+              border-color 180ms ease;
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-raised);
+    border-color: var(--border-strong);
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Native-cursor suppression for the custom cursor, deliberately narrow.
+   `.has-custom-cursor` is added to <html> by `components/motion/CustomCursor`
+   only after it mounts, and only on a fine hovering pointer with reduced-motion
+   off. So this rule cannot apply unless a replacement pointer is actually on
+   screen — if the JS never runs, the OS cursor is untouched. It is also scoped
+   to `[data-cursor]` elements rather than `*`, so the I-beam over text and the
+   affordances on form controls survive everywhere else. */
+.has-custom-cursor [data-cursor] { cursor: none; }
+
+/* ════════════════════════════════════════════════════════════════
+   CINEMATIC LAYER — depth, light, material
+   ════════════════════════════════════════════════════════════════
+   These exist because they cannot be expressed as Tailwind utilities
+   without becoming unreadable (multi-stop gradient stacks, eight-layer
+   backgrounds, masks). Anything Tailwind 4.3 already provides —
+   `perspective-*`, `transform-3d`, `backface-hidden`, `translate-z-*` —
+   is used directly at the call site instead of being wrapped here. */
+
+/* 3D stage. `perspective-origin` sits above centre because the hero
+   assembly is viewed slightly from above, like a part on a bench. */
+.scene {
+  perspective: 1400px;
+  perspective-origin: 50% 42%;
+  transform-style: preserve-3d;
+}
+/* Children that must keep their own 3D space rather than flatten. */
+.scene-layer {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Machined steel. Three stacked layers, in paint order:
+   1. a base value ramp (the plate itself),
+   2. anisotropic brushing — 1px lines at 3px pitch, which is what makes
+      it read as *brushed* metal rather than a grey gradient,
+   3. a specular band: bright at the top edge, a dark mid-body, a
+      secondary highlight low down, dark at the bottom lip. That
+      bright/dark/bright sequence is how a rolled steel surface
+      actually reflects a broad light source.
+   Text on the plate is safe: #f8fafc measures 14.24:1 at the lightest
+   point of the ramp. */
+.metal {
+  background-color: #1d2124;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.10) 0%,
+      rgb(255 255 255 / 0.02) 18%,
+      rgb(0 0 0 / 0.10) 55%,
+      rgb(255 255 255 / 0.045) 82%,
+      rgb(0 0 0 / 0.22) 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.028) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(180deg, #23282b 0%, #171b1e 100%);
+  box-shadow: var(--shadow-inset-top);
+}
+
+/* Cinematic lighting overlay. Absolute by default because it is always
+   a sibling layer over content, never a container.
+   Three gradients: a key light spilling from above, a cool fill from
+   the left so the subject is not lit flat, and a vignette that darkens
+   the frame edges to pull the eye inward. */
+.stage-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      60% 45% at 50% 0%,
+      rgb(255 255 255 / 0.09) 0%,
+      rgb(255 255 255 / 0.03) 45%,
+      transparent 72%
+    ),
+    radial-gradient(
+      45% 55% at 8% 28%,
+      rgb(148 197 255 / 0.05) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      120% 120% at 50% 45%,
+      transparent 45%,
+      rgb(0 0 0 / 0.45) 100%
+    );
+}
+
+/* Dither. Wide, low-contrast gradients on near-black band visibly into
+   stripes on 8-bit panels — the single most common reason a "cinematic
+   dark section" looks cheap. A 3.5% noise tile breaks the bands up and
+   reads as fine film grain. Static: no animation, so it costs one
+   120px tile and nothing per frame. */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Drafting crop marks at the four corners — the detail that makes a
+   frame read as a drawing sheet rather than a div with a border.
+   Eight single-colour gradient layers on one pseudo-element, so four
+   corners cost zero extra DOM. Tune per call site with --cad-tick
+   (colour) and --cad-len (arm length). */
+.cad-frame { position: relative; }
+.cad-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--cad-tick, var(--border-strong));
+  --cad-len: 14px;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size:
+    var(--cad-len) 1px, 1px var(--cad-len),
+    var(--cad-len) 1px, 1px var(--cad-len),
+    var(--cad-len) 1px, 1px var(--cad-len),
+    var(--cad-len) 1px, 1px var(--cad-len);
+  background-position:
+    left top, left top,
+    right top, right top,
+    left bottom, left bottom,
+    right bottom, right bottom;
+}
+
+/* Edge masks. `-b` lets an image dissolve into the section beneath it
+   instead of ending on a hard horizontal seam; `-x` fades the ends of
+   a horizontal scroller so the overflow reads as continuing rather
+   than clipped. Prefixed copies included for Safari < 16.4. */
+.mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(
+    to right, transparent 0, #000 4rem, #000 calc(100% - 4rem), transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right, transparent 0, #000 4rem, #000 calc(100% - 4rem), transparent 100%
+  );
+}
+
+/* Hollow display type, for the oversized wordmark in the footer.
+   The base rule keeps a faint fill so the mark is still legible if
+   text-stroke is unsupported; the @supports block then swaps to a true
+   outline. Setting `color: transparent` unconditionally would leave the
+   wordmark invisible rather than merely unstyled.
+
+   Both the stroke colour and its WIDTH are overridable, because stroke
+   weight does not scale with font size: 1px reads correctly on the 8rem
+   plate numbers in ShowcaseFrame and all but disappears on a 27rem
+   footer wordmark. The call site sets the width to match its scale. */
+.wordmark-outline { color: rgb(255 255 255 / 0.09); }
+@supports (-webkit-text-stroke: 1px currentColor) {
+  .wordmark-outline {
+    color: transparent;
+    -webkit-text-stroke:
+      var(--wordmark-stroke-w, 1px)
+      var(--wordmark-stroke, rgb(255 255 255 / 0.16));
   }
 }
 
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
+/* ── Removed: the legacy compatibility layer ──
+   This file used to end with a `:root` block of 32 alias variables —
+   `--gold-50…900`, `--forest-50…950`, `--charcoal-600…950`, `--emerald-400…700`,
+   `--offwhite`, `--cream`, `--font-serif` — re-pointed at the new industrial
+   scales. Their purpose was migration safety: the old components referenced
+   those names in roughly 216 places, so aliasing them meant the whole site
+   could change identity from one file without a mass find-and-replace that
+   could break things mid-way.
+
+   Every one of those call sites has since been moved onto the semantic tokens
+   (`--bg`, `--surface`, `--text`, `--accent`, `--border` …) or the `@theme`
+   scales (`ink-*`, `steel-*`, `agri-*`, `paper-*`), so a repo-wide scan of
+   `src`, `prisma`, `messages` and `public` — comments excluded — now finds zero
+   references to any of the 32. Two of them, `--emerald-*` and `--forest-950`,
+   originally existed only to define variables that components referenced but
+   nothing declared (ProductCard's brochure-button gradient and GalleryClient's
+   banner); those components no longer use them at all.
+
+   Deleting the layer is deliberate rather than cosmetic: a full ten-step gold
+   ramp sitting in the stylesheet is an open invitation to drift back toward the
+   decorative gold/luxury palette this redesign replaced. New code should use the
+   semantic tokens. */
+
+/* ── Removed: the legacy decorative layer ──
+   The previous theme also carried a set of classes that produced the strongest
+   "AI-generated template" signals: animated multi-stop gradient text
+   (`.text-gradient-gold`, `.text-gradient-hero`), an infinite gold shimmer
+   sweep (`.shimmer-badge`), neon blooms (`.glow-gold`, `.glow-green`), frosted
+   panels (`.glass`, `.glass-light`), an animated gradient underline
+   (`.border-gradient`), a gold dot field (`.dot-pattern`), a 6px hover float
+   (`.card-premium`), a permanently expanding halo behind the WhatsApp button
+   (`.pulse-ring`), and four looping animations (`.animate-float`,
+   `.animate-spin-slow`, `.animate-marquee`, `.animate-bounce-in`).
+
+   During the redesign each was first neutralised in place — same class name,
+   disciplined output — so that call sites kept working while they were migrated
+   to the real design system (`.panel`, `.steel-plate`, `.lift`, `.chip-dark`,
+   `.blueprint-grid-*`, `.spec-label`). That migration is now complete: a scan of
+   every non-admin `.tsx`/`.ts` with comments stripped found zero live references
+   to any of them, and no dynamically constructed class names
+   (`` `chip-${x}` `` and similar) that a static scan could miss. Keeping
+   neutralised stubs around only invites them back, so they are gone.
+
+   `slide-down` below is the one survivor — it is live in
+   `components/navbar/NavDropdown.tsx`. */
 
 @keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-  70% {
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ── Utility Classes ── */
-
-/* Glassmorphism */
-.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.glass-light {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-/* Animated gradient text */
-.text-gradient-gold {
-  background: linear-gradient(135deg, #f0b429, #c78a2c, #f5c94e, #c78a2c);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 4s ease infinite;
-}
-
-.text-gradient-hero {
-  background: linear-gradient(135deg, #ffffff, #f0b429, #22c55e, #ffffff);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 6s ease infinite;
-}
-
-/* Premium card hover */
-.card-premium {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-premium:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 20px 40px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(199, 138, 44, 0.15);
-}
-
-/* Glow effects */
-.glow-gold {
-  box-shadow: 0 0 20px rgba(199, 138, 44, 0.25), 0 0 60px rgba(199, 138, 44, 0.1);
-}
-
-.glow-green {
-  box-shadow: 0 0 20px rgba(22, 101, 52, 0.25), 0 0 60px rgba(22, 101, 52, 0.1);
-}
-
-/* Animated gradient border */
-.border-gradient {
-  position: relative;
-}
-.border-gradient::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold-500), var(--forest-600), var(--gold-500), transparent);
-  background-size: 200% 100%;
-  animation: gradient-shift 3s ease infinite;
-}
-
-/* Shimmer badge */
-.shimmer-badge {
-  background: linear-gradient(
-    110deg,
-    var(--gold-500) 0%,
-    var(--gold-300) 40%,
-    var(--gold-500) 60%,
-    var(--gold-500) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* Pulse ring for WhatsApp button */
-.pulse-ring::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  background: inherit;
-  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  z-index: -1;
-}
-
-/* Float animation */
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Slide down animation */
-.animate-slide-down {
-  animation: slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Bounce in animation */
-.animate-bounce-in {
-  animation: bounce-in 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Spin slow */
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-/* Decorative dot grid pattern */
-.dot-pattern {
-  background-image: radial-gradient(circle, rgba(199, 138, 44, 0.12) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Selection style */
-::selection {
-  background-color: rgba(199, 138, 44, 0.3);
-  color: var(--charcoal-900);
-}
+.animate-slide-down { animation: slide-down 220ms cubic-bezier(0.2, 0, 0.2, 1); }

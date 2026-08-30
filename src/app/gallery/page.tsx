@@ -4,6 +4,7 @@ import GalleryClient from "./GalleryClient";
 export const metadata = {
   title: "Workshop & Machinery Gallery",
   description: "View photographs of M/s Raj Agro Engineering Works plant, manufacturing infrastructure, rotary tillers, thresher builds, and field demonstrations.",
+  alternates: { canonical: "/gallery" },
 };
 
 export const revalidate = 60;

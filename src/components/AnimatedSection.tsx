@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { type ReactNode } from "react";
 
 type AnimationVariant = "fadeUp" | "fadeIn" | "slideLeft" | "slideRight" | "scaleUp";
@@ -37,6 +37,17 @@ const variants: Record<AnimationVariant, Variants> = {
   },
 };
 
+/**
+ * Scroll-triggered entrance animation.
+ *
+ * Every variant starts from `opacity: 0`, which means the animation is not
+ * decorative — it gates whether the content is visible at all. Framer Motion
+ * applies that via inline styles, so the `@media (prefers-reduced-motion)`
+ * block in globals.css cannot switch it off; the only reliable way is to check
+ * the preference in JS and skip the motion wrapper entirely. Without this,
+ * anyone who has asked their OS to reduce motion still gets every section on
+ * every page sliding and fading in.
+ */
 export default function AnimatedSection({
   children,
   variant = "fadeUp",
@@ -45,6 +56,12 @@ export default function AnimatedSection({
   className = "",
   once = true,
 }: AnimatedSectionProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"
@@ -73,6 +90,12 @@ export function StaggerContainer({
   className?: string;
   staggerDelay?: number;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"
@@ -93,6 +116,12 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       variants={{

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Phone, Mail, MapPin, MessageSquare, Trash2, Eye, X } from "lucide-react";
+import { Search, Phone, MapPin, MessageSquare, Trash2, Eye, X } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 

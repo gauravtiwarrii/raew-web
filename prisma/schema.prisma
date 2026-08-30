@@ -45,6 +45,7 @@ model Product {
   applications     String     // JSON formatted array of application strings
   image            String
   galleryImages    String     // JSON formatted array of secondary image URLs
+  brochure         String?    // URL/path to brochure PDF
   priceDisplay     String     @default("Price on Request")
   availability     String     @default("In Stock") // In Stock, Made to Order, Available
   featured         Boolean    @default(false)
