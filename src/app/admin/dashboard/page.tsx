@@ -6,17 +6,35 @@ import { formatDate } from "@/lib/utils";
 export const revalidate = 0; // Dynamic
 
 export default async function AdminDashboardPage() {
-  const totalProducts = await prisma.product.count();
-  const activeProducts = await prisma.product.count({ where: { active: true } });
-  const totalEnquiries = await prisma.enquiry.count();
-  const newEnquiries = await prisma.enquiry.count({ where: { status: "NEW" } });
-  const quoteRequests = await prisma.enquiry.count({ where: { source: "QUOTE_FORM" } });
-
-  const recentEnquiries = await prisma.enquiry.findMany({
-    take: 6,
-    orderBy: { createdAt: "desc" },
-    include: { product: true },
-  });
+  const [
+    totalProducts,
+    activeProducts,
+    totalEnquiries,
+    newEnquiries,
+    quoteRequests,
+    totalPosts,
+    publishedPosts,
+    totalProjects,
+    openJobs,
+    jobApplications,
+    recentEnquiries,
+  ] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.count({ where: { active: true } }),
+    prisma.enquiry.count(),
+    prisma.enquiry.count({ where: { status: "NEW" } }),
+    prisma.enquiry.count({ where: { source: "QUOTE_FORM" } }),
+    prisma.blogPost.count(),
+    prisma.blogPost.count({ where: { published: true } }),
+    prisma.project.count({ where: { active: true } }),
+    prisma.jobPost.count({ where: { active: true } }),
+    prisma.jobApplication.count(),
+    prisma.enquiry.findMany({
+      take: 6,
+      orderBy: { createdAt: "desc" },
+      include: { product: true },
+    }),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -39,15 +57,15 @@ export default async function AdminDashboardPage() {
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
           <div className="flex items-center justify-between text-gray-400">
             <span className="text-xs font-bold uppercase tracking-wider">Active Catalog</span>
-            <CheckCircle className="w-4 h-4 text-emerald-400" />
+            <CheckCircle className="w-4 h-4 text-[var(--accent-on-dark)]" />
           </div>
-          <p className="text-2xl font-extrabold text-emerald-400">{activeProducts}</p>
+          <p className="text-2xl font-extrabold text-[var(--accent-on-dark)]">{activeProducts}</p>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
           <div className="flex items-center justify-between text-gray-400">
             <span className="text-xs font-bold uppercase tracking-wider">Total Leads</span>
-            <Inbox className="w-4 h-4 text-emerald-400" />
+            <Inbox className="w-4 h-4 text-[var(--accent-on-dark)]" />
           </div>
           <p className="text-2xl font-extrabold text-white">{totalEnquiries}</p>
         </div>
@@ -69,13 +87,35 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* Content Management Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Published Articles", value: `${publishedPosts} / ${totalPosts}`, href: "/admin/blog" },
+          { label: "Active Projects", value: String(totalProjects), href: "/admin/projects" },
+          { label: "Open Roles", value: String(openJobs), href: "/admin/careers" },
+          { label: "Job Applications", value: String(jobApplications), href: "/admin/careers" },
+        ].map((card) => (
+          <Link
+            key={card.label}
+            href={card.href}
+            className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2 transition-colors hover:border-slate-600"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">{card.label}</span>
+            <p className="flex items-center justify-between text-2xl font-extrabold text-white">
+              {card.value}
+              <ArrowRight className="h-4 w-4 text-gray-500" aria-hidden="true" />
+            </p>
+          </Link>
+        ))}
+      </div>
+
       {/* Recent Customer Enquiries Table */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-white">Recent Customer Leads</h2>
           <Link
             href="/admin/enquiries"
-            className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center space-x-1"
+            className="text-xs font-bold text-[var(--accent-on-dark)] hover:text-[var(--accent-on-dark-strong)] flex items-center space-x-1"
           >
             <span>View All Leads</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -103,7 +143,7 @@ export default async function AdminDashboardPage() {
                     </td>
                     <td className="p-3">
                       <span className="flex items-center space-x-1 text-gray-300">
-                        <Phone className="w-3 h-3 text-emerald-400" />
+                        <Phone className="w-3 h-3 text-[var(--accent-on-dark)]" />
                         <span>{enq.phone}</span>
                       </span>
                       <span className="flex items-center space-x-1 text-gray-400 text-[11px]">
@@ -123,7 +163,7 @@ export default async function AdminDashboardPage() {
                           enq.status === "NEW"
                             ? "bg-amber-950 text-amber-300 border border-amber-800"
                             : enq.status === "QUOTED"
-                            ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                            ? "bg-[var(--accent)]/20 text-[var(--accent-on-dark-strong)] border border-[var(--accent-bright)]/60"
                             : "bg-slate-800 text-gray-300"
                         }`}
                       >

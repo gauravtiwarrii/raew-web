@@ -89,14 +89,47 @@ export default function MachineFinder({ machines }: MachineFinderProps) {
 
   return (
     <div className="border border-[var(--border-inverse)] bg-[var(--surface-inverse)] p-6 sm:p-7">
-      <h3 className="text-lg font-bold tracking-tight text-white">
+      <h3 id="finder-heading" className="text-lg font-bold tracking-tight text-white">
         Find the right machine
       </h3>
       <p className="mt-1.5 text-xs leading-relaxed text-[var(--text-inverse-muted)]">
         Tell us the operation and we will point you at the machinery built for it.
       </p>
 
-      <div id={panelId} className="mt-6">
+      {/* The operation row is a radio group: exactly one is active at a time,
+          so role="radiogroup" + role="radio" + aria-checked is the pattern
+          assistive technology expects for "choose one of N" widgets. */}
+      <div
+        id={panelId}
+        className="mt-6"
+        role="radiogroup"
+        aria-labelledby="finder-heading"
+      >
+        <ul className="flex flex-wrap gap-2">
+          {OPERATIONS.map((op) => {
+            const isSelected = selected?.label === op.label;
+            return (
+              <li key={op.label}>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => setSelected(isSelected ? null : op)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] transition-colors duration-150 ${
+                    isSelected
+                      ? "border-[var(--accent-on-dark)] bg-[var(--accent-on-dark)] text-[var(--cinema-void)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
+                      : "border-[var(--border-inverse)] bg-[var(--surface-inverse)] text-[var(--text-inverse)] hover:border-[var(--accent-on-dark)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
+                  }`}
+                >
+                  {op.label}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="mt-6">
         {!selected ? (
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {OPERATIONS.map((op) => (

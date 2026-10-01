@@ -32,6 +32,7 @@ export async function GET() {
         },
       },
       orderBy: { sortOrder: "asc" },
+      take: 100,
     });
 
     return NextResponse.json(categories);

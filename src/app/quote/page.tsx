@@ -1,41 +1,7 @@
-import QuoteClient from "./QuoteClient";
-import { prisma } from "@/lib/db";
-import { getSiteConfig } from "@/lib/site-settings";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import QuoteForm from "./QuoteForm";
 
-export const metadata = {
-  title: "Request a Machinery Quotation",
-  description: "Get an official price quote for rotavators, laser land levelers, threshers, tractor trailers, and custom farm machinery from M/s Raj Agro Engineering Works.",
-  alternates: { canonical: "/quote" },
-};
-
-export const revalidate = 60;
-
-interface QuotePageProps {
-  searchParams: Promise<{
-    product?: string;
-  }>;
-}
-
-export default async function QuotePage({ searchParams }: QuotePageProps) {
-  const params = await searchParams;
-  const config = await getSiteConfig();
-
-  let products: { id: string; name: string }[] = [];
-  try {
-    products = await prisma.product.findMany({
-      where: { active: true },
-      select: { id: true, name: true },
-      orderBy: { name: "asc" },
-    });
-  } catch (error) {
-    console.error("Quote page: failed to fetch products:", error);
-  }
-
-  return (
-    <QuoteClient
-      products={products}
-      initialProductTitle={params.product || ""}
-      whatsappNumber={config.whatsappNumber}
-    />
-  );
+export default function QuotePage() {
+  return <main className="quote-page"><div className="shell quote-page-grid"><div><Link href="/" className="back-link"><ArrowLeft size={15} /> Back to RAEW</Link><p className="eyebrow">Requirement / 01</p><h1>Tell us what<br /><i>needs doing.</i></h1><p>Share the machine, implement or engineering problem you are trying to solve. We will take it from there.</p><div className="contact-note">Prefer a direct conversation?<br /><a href="tel:+917651861335">+91 76518 61335</a></div></div><QuoteForm /></div></main>;
 }

@@ -21,6 +21,7 @@ const jsonStringSchema = z.string().trim().refine((value) => {
     return false;
   }
 }, "Must be valid JSON");
+const imageTypeSchema = z.enum(["REAL_COMPANY_PHOTO", "AI_GENERATED_CONCEPT", "STOCK_LICENSED", "USER_UPLOADED"]);
 
 const productUpdateSchema = z.object({
   name: z.string().trim().min(2).max(120).optional(),
@@ -32,7 +33,9 @@ const productUpdateSchema = z.object({
   features: jsonStringSchema.optional(),
   applications: jsonStringSchema.optional(),
   image: imageRefSchema.optional(),
+  imageType: imageTypeSchema.optional(),
   galleryImages: jsonStringSchema.optional(),
+  galleryImageTypes: jsonStringSchema.optional(),
   priceDisplay: z.string().trim().max(80).optional(),
   availability: z.string().trim().max(80).optional(),
   featured: z.boolean().optional(),

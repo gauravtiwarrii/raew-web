@@ -21,6 +21,7 @@ interface Product {
   features: string;
   applications: string;
   image: string;
+  imageType: string;
   galleryImages: string;
   priceDisplay: string;
   availability: string;
@@ -51,6 +52,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
     features: "[\"Heavy duty boron steel blades\", \"Multi-speed gearbox\"]",
     applications: "[\"Seedbed preparation\", \"Stubble mulching\"]",
     image: "",
+    imageType: "REAL_COMPANY_PHOTO",
     priceDisplay: "Price on Request",
     availability: "In Stock",
     featured: false,
@@ -74,6 +76,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
       features: "[\"Heavy duty boron steel blades\", \"Multi-speed gearbox\"]",
       applications: "[\"Seedbed preparation\", \"Stubble mulching\"]",
       image: "",
+      imageType: "REAL_COMPANY_PHOTO",
       priceDisplay: "Price on Request",
       availability: "In Stock",
       featured: false,
@@ -94,6 +97,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
       features: product.features,
       applications: product.applications,
       image: product.image,
+      imageType: product.imageType || "REAL_COMPANY_PHOTO",
       priceDisplay: product.priceDisplay,
       availability: product.availability,
       featured: product.featured,
@@ -215,7 +219,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Filter products..."
-          className="w-full pl-9 pr-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-emerald-600"
+          className="w-full pl-9 pr-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-bright)]"
         />
       </div>
 
@@ -258,7 +262,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                       </div>
                     </div>
                   </td>
-                  <td className="p-3.5 font-semibold text-emerald-400">{product.category.name}</td>
+                  <td className="p-3.5 font-semibold text-[var(--accent-on-dark)]">{product.category.name}</td>
                   <td className="p-3.5 font-semibold text-amber-300">{product.priceDisplay}</td>
                   <td className="p-3.5 text-center">
                     <button
@@ -274,7 +278,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     <button
                       onClick={() => toggleActive(product)}
                       className={`p-1.5 rounded-lg transition-colors ${
-                        product.active ? "text-emerald-400" : "text-red-500"
+                        product.active ? "text-[var(--accent-on-dark)]" : "text-red-500"
                       }`}
                     >
                       {product.active ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
@@ -325,7 +329,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     required
                     value={formData.name}
                     onChange={(e) => handleNameChange(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                   />
                 </div>
 
@@ -336,7 +340,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     required
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono focus:outline-none focus:border-[var(--accent-bright)]"
                   />
                 </div>
               </div>
@@ -347,7 +351,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   <select
                     value={formData.categoryId}
                     onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                   >
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -364,7 +368,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     value={formData.priceDisplay}
                     onChange={(e) => setFormData({ ...formData, priceDisplay: e.target.value })}
                     placeholder="Price on Request"
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                   />
                 </div>
 
@@ -375,7 +379,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     value={formData.availability}
                     onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
                     placeholder="In Stock"
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                   />
                 </div>
               </div>
@@ -387,8 +391,18 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   required
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-300 mb-1">Image provenance</label>
+                <select value={formData.imageType} onChange={(e) => setFormData({ ...formData, imageType: e.target.value })} className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]">
+                  <option value="REAL_COMPANY_PHOTO">Real company photo</option>
+                  <option value="AI_GENERATED_CONCEPT">AI generated concept</option>
+                  <option value="STOCK_LICENSED">Licensed stock</option>
+                  <option value="USER_UPLOADED">User uploaded</option>
+                </select>
               </div>
 
               <div>
@@ -398,7 +412,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   required
                   value={formData.shortDescription}
                   onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -409,7 +423,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   required
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -419,7 +433,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                   rows={3}
                   value={formData.specifications}
                   onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-amber-300 font-mono focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-amber-300 font-mono focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -429,7 +443,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     type="checkbox"
                     checked={formData.featured}
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                    className="rounded text-emerald-600"
+                    className="rounded accent-[var(--accent-bright)]"
                   />
                   <span>Mark Featured</span>
                 </label>
@@ -439,7 +453,7 @@ export default function ProductManager({ initialProducts, categories }: ProductM
                     type="checkbox"
                     checked={formData.active}
                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                    className="rounded text-emerald-600"
+                    className="rounded accent-[var(--accent-bright)]"
                   />
                   <span>Active in Catalog</span>
                 </label>

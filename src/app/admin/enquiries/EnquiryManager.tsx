@@ -116,7 +116,7 @@ export default function EnquiryManager({ initialEnquiries }: EnquiryManagerProps
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, phone, city..."
-            className="w-full pl-9 pr-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-emerald-600"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-bright)]"
           />
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function EnquiryManager({ initialEnquiries }: EnquiryManagerProps
                     </td>
                     <td className="p-3.5">
                       <span className="flex items-center space-x-1 text-gray-200">
-                        <Phone className="w-3 h-3 text-emerald-400" />
+                        <Phone className="w-3 h-3 text-[var(--accent-on-dark)]" />
                         <span>{enq.phone}</span>
                       </span>
                       <span className="flex items-center space-x-1 text-gray-400 text-[11px]">
@@ -174,9 +174,9 @@ export default function EnquiryManager({ initialEnquiries }: EnquiryManagerProps
                           enq.status === "NEW"
                             ? "bg-amber-950 text-amber-300 border border-amber-800"
                             : enq.status === "QUOTED"
-                            ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                            ? "bg-[var(--accent)]/20 text-[var(--accent-on-dark-strong)] border border-[var(--accent-bright)]/60"
                             : enq.status === "CONVERTED"
-                            ? "bg-emerald-800 text-white"
+                            ? "bg-[var(--accent)] text-white"
                             : "bg-slate-800 text-gray-300"
                         }`}
                       >
@@ -194,7 +194,7 @@ export default function EnquiryManager({ initialEnquiries }: EnquiryManagerProps
                           href={waUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 text-emerald-400 hover:text-emerald-300 bg-emerald-950/60 rounded-lg"
+                          className="p-1.5 text-[var(--accent-on-dark)] hover:text-[var(--accent-on-dark-strong)] bg-[var(--accent)]/25 rounded-lg"
                           title="Contact via WhatsApp"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
@@ -243,7 +243,7 @@ export default function EnquiryManager({ initialEnquiries }: EnquiryManagerProps
               <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
                 <div>
                   <span className="text-gray-500 font-bold block">Phone Number:</span>
-                  <span className="font-semibold text-emerald-400">{selectedEnquiry.phone}</span>
+                  <span className="font-semibold text-[var(--accent-on-dark)]">{selectedEnquiry.phone}</span>
                 </div>
                 <div>
                   <span className="text-gray-500 font-bold block">Delivery Location:</span>

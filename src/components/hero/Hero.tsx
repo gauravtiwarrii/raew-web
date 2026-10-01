@@ -2,9 +2,10 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import HeroVisual from "./HeroVisual";
 import TextReveal from "@/components/motion/TextReveal";
-import MagneticLink from "@/components/motion/MagneticLink";
+import LiquidGlass from "@/components/ui/LiquidGlass";
 
 /**
  * Hero — the first five seconds.
@@ -26,14 +27,26 @@ import MagneticLink from "@/components/motion/MagneticLink";
  *     every section heading below is `text-display-2` (max 2.75rem). Hierarchy
  *     now comes from size, not from weight — Space Grotesk stops at 700, so
  *     `font-extrabold` would only smear a synthetic bold.
- *   • **Depth.** Type sits on a lit 3D assembly with a vignette, rather than on
- *     a flat fill with one blurred circle.
+ *   • **Depth.** Type sits on a lit, scrimmed photographic ground with a
+ *     vignette, rather than on a flat fill with one blurred circle.
+ *
+ * ── `photoSrc` ────────────────────────────────────────────────────────────
+ * Resolved on the server by `resolveHeroPhoto()` and threaded through from
+ * `page.tsx`. `undefined` — the state today — is not a failure: `HeroVisual`
+ * falls back to an abstract drafting motif rather than to stock photography.
  *
  * ── Why the text is not inside the dynamic boundary ───────────────────────
- * `HeroVisual` is `ssr: false`; everything legible here is not. The headline,
- * copy and both CTAs are in the server-rendered HTML and are readable and
- * clickable before any JavaScript executes. Only the decorative assembly waits
- * for hydration.
+ * `HeroVisual`'s motif branch is `ssr: false`; everything legible here is not.
+ * The headline, copy and both CTAs are in the server-rendered HTML and are
+ * readable and clickable before any JavaScript executes.
+ *
+ * ── Why these are plain `Link`s ───────────────────────────────────────────
+ * They were `MagneticLink`s, which sprang toward the cursor and fed a label to a
+ * custom cursor ring. Both are gone. A button that moves away from where you
+ * clicked is a novelty that costs accuracy, it does nothing at all on touch, and
+ * it is one of the clearest "template portfolio" tells there is. The hover cue
+ * that survives is the one that carries meaning: the arrow slides in the
+ * direction the link will take you.
  */
 
 /* Pre-split so the line breaks are a design decision rather than a function of
@@ -42,7 +55,7 @@ import MagneticLink from "@/components/motion/MagneticLink";
    available at 320px. See the arithmetic in globals.css before changing either. */
 const HEADLINE = ["ENGINEERED", "FOR THE", "FIELD."] as const;
 
-export default function Hero() {
+export default function Hero({ photoSrc }: { photoSrc?: string }) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -50,9 +63,33 @@ export default function Hero() {
       aria-labelledby="hero-heading"
       className="cinema relative flex min-h-svh flex-col justify-center overflow-hidden border-b border-[var(--cinema-edge)] pt-28 pb-16 md:pt-32 md:pb-20"
     >
-      <HeroVisual />
+      <HeroVisual photoSrc={photoSrc} />
 
       <div className="shell relative z-10">
+        <motion.div
+          className="pointer-events-none absolute right-6 top-24 hidden w-[260px] md:block"
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 18, rotateX: 8 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, rotateX: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={prefersReducedMotion ? undefined : { y: -4, rotateX: 0 }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <LiquidGlass className="pointer-events-auto rounded-2xl p-4 text-left text-[var(--text-inverse)] shadow-[0_18px_60px_rgba(0,0,0,0.25)]">
+            <div className="space-y-3">
+              <div className="eyebrow text-[var(--accent-on-dark)]">RAEW</div>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--text-inverse-muted)]">
+                Engineered for agriculture
+              </p>
+              <div className="flex items-center justify-between gap-3 pt-1">
+                <div className="text-sm font-medium text-[var(--text-inverse)]">Explore</div>
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/5 text-[var(--text-inverse)]">
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </div>
+            </div>
+          </LiquidGlass>
+        </motion.div>
+
         {/* max-w-4xl, not 3xl: at the 5.5rem ceiling `ENGINEERED` needs the extra
             room to stay on one line without hyphenating. */}
         <div className="max-w-4xl">
@@ -77,6 +114,11 @@ export default function Hero() {
             lines={[...HEADLINE]}
             delay={0.2}
             stagger={0.09}
+            /* Not negotiable for this element: `TextReveal`'s pre-animation state
+               is clipped out of sight, so a scroll trigger on the first heading
+               on the page risks a blank hero. Mount-triggered, like everything
+               else in this section. */
+            trigger="mount"
             className="mt-7 text-mega font-bold text-[var(--text-inverse)]"
           />
 
@@ -97,10 +139,9 @@ export default function Hero() {
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.68, ease: [0.22, 1, 0.36, 1] }}
           >
-            <MagneticLink
+            <Link
               href="/products"
-              cursorLabel="Explore"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-md bg-[var(--accent)] px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-[0.12em] text-[var(--accent-fg)] transition-colors duration-200 hover:bg-[var(--accent-hover)]"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-md bg-[var(--accent)] px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-[0.12em] text-[var(--accent-fg)] transition-colors duration-200 hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
             >
               Explore machinery
               {/* Arrow slides on hover — a 3px cue, no bounce. */}
@@ -108,15 +149,20 @@ export default function Hero() {
                 className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
                 aria-hidden="true"
               />
-            </MagneticLink>
+            </Link>
 
-            <MagneticLink
+            {/* Secondary CTA. This carried `backdrop-blur-sm`, which is removed:
+                the brief rules out glassmorphism, and blurring a background that
+                is already a scrimmed photograph buys nothing but a paint cost on
+                a 200px surface. The 6% white fill stays — over photography a
+                border-only button loses its left edge against a light region, and
+                a flat low-alpha wash is a scrim, not glass. */}
+            <Link
               href="/quote"
-              cursorLabel="Quote"
-              className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/[0.04] px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-inverse)] backdrop-blur-sm transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.09]"
+              className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/[0.06] px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-inverse)] transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.11] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
             >
               Request a quote
-            </MagneticLink>
+            </Link>
           </motion.div>
         </div>
       </div>

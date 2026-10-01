@@ -21,6 +21,7 @@ const jsonStringSchema = z.string().trim().refine((value) => {
     return false;
   }
 }, "Must be valid JSON");
+const imageTypeSchema = z.enum(["REAL_COMPANY_PHOTO", "AI_GENERATED_CONCEPT", "STOCK_LICENSED", "USER_UPLOADED"]);
 
 const productSchema = z.object({
   name: z.string().trim().min(2, "Name is required").max(120),
@@ -32,7 +33,9 @@ const productSchema = z.object({
   features: jsonStringSchema,
   applications: jsonStringSchema,
   image: imageRefSchema,
+  imageType: imageTypeSchema.optional().default("STOCK_LICENSED"),
   galleryImages: jsonStringSchema.optional().default("[]"),
+  galleryImageTypes: jsonStringSchema.optional().default("[]"),
   priceDisplay: z.string().trim().max(80).optional().default("Price on Request"),
   availability: z.string().trim().max(80).optional().default("In Stock"),
   featured: z.boolean().optional().default(false),
@@ -77,6 +80,7 @@ export async function GET(req: NextRequest) {
         },
       },
       orderBy: { createdAt: "desc" },
+      take: 100,
     });
 
     return NextResponse.json(products);

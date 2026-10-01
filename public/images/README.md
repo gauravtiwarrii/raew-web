@@ -9,8 +9,56 @@ image you add here appears on the site immediately — no code changes needed.
 | ---------- | ------------------------------------------------------------------------- |
 | `products/`| One clear photograph per machine, plus any extra angles.                   |
 | `company/` | The works, the fabrication bay, the team, machinery being built.           |
-| `hero/`    | Wide landscape shots for page banners.                                     |
+| `hero/`    | The one wide photograph behind the homepage headline. See below.           |
 | `gallery/` | Field photographs, installations, delivered machines.                      |
+
+## The homepage hero photograph
+
+This is the single highest-impact image on the site — the full-screen panel a
+first-time visitor sees behind "ENGINEERED FOR THE FIELD." It is worth spending
+more effort on this one photo than on all the others put together.
+
+**To add it,** save one file at exactly this path:
+
+```
+public/images/hero/workshop.jpg
+```
+
+That is the whole procedure. There is no admin field and no code change; the
+site looks for that file on each build and uses it if it is there. `.avif`,
+`.webp`, `.jpeg` and `.png` work too, and if you happen to have several, the
+first match in the order `.avif`, `.webp`, `.jpg`, `.jpeg`, `.png` wins.
+
+The name must be lowercase — `workshop.jpg`, not `Workshop.JPG`. Windows
+treats those as the same file and Linux does not, so a capitalised name will
+look correct on your own machine and then fail to appear on the live site.
+
+**What to photograph.** Your actual works, doing actual work. A machine part
+way through fabrication on the shop floor, a welder mid-weld, a finished
+rotavator behind a tractor in a field. What does *not* work: a posed group
+photograph, a shot of the building's front gate, anything with the logo or
+lettering in it, or a generic tractor picture that could belong to anyone.
+
+**Shape and size.** Wide landscape, roughly 2.4:1 or wider if you have it, and
+about 2400px on the long edge — larger than the guidance below for the other
+folders, because this one fills the whole screen. The photograph is cropped
+from the centre to fill whatever shape the visitor's screen is, so keep some
+slack at all four edges. The headline sits over the left third, so put the
+subject centre or right of centre, and do not rely on detail in the bottom-left
+corner being visible.
+
+**Do not darken it first.** The site dims the photograph and lays a dark wash
+over the left side itself, so that white text stays readable no matter what you
+supply. A bright, well-exposed daylight photograph is the *best* input here;
+one you have already darkened will come out muddy.
+
+**If there is no file,** the homepage draws a fine engineering figure in place
+of a photograph. That is a deliberate designed state, not a broken one, so
+there is no rush and no penalty for leaving the slot empty until you have a
+photo you are happy with. Renaming or removing the file returns the site to it.
+
+One note for whoever deploys the site: this image is part of the project rather
+than the database, so it needs to be committed and deployed like any other file.
 
 ## How to add a product photograph
 

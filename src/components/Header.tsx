@@ -15,6 +15,7 @@ interface HeaderProps {
   email?: string;
   whatsapp?: string;
   businessHours?: string;
+  brandTagline?: string;
 }
 
 interface NavGroup {
@@ -57,6 +58,7 @@ export default function Header({
   email = "info@raew.in",
   whatsapp = "917651861335",
   businessHours = "24/7",
+  brandTagline = "Engineering a Greener Tomorrow",
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -136,10 +138,10 @@ export default function Header({
      cost on a phone for no visible gain, since what sits behind the
      unscrolled bar is a near-black gradient that blurs to itself. */
   const barChrome = overlay
-    ? `cinema absolute inset-x-0 top-0 z-10 [--surface-2:rgb(255_255_255/0.10)] transition-colors duration-300 ${
+    ? `cinema liquid-glass absolute inset-x-0 top-0 z-10 [--surface-2:rgb(255_255_255/0.10)] transition-colors duration-300 ${
         solid
-          ? "border-b border-[rgb(255_255_255/0.10)] bg-[rgb(7_7_7/0.72)] backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
+          ? "border-b border-[rgb(255_255_255/0.10)] bg-[rgb(7_7_7/0.72)]"
+          : "border-b border-transparent bg-transparent shadow-none"
       }`
     : "";
 
@@ -333,28 +335,56 @@ export default function Header({
                 sideways. The step down to `text-sm` under 360px is what keeps
                 the ellipsis from ever actually being needed on a real phone. */}
             <Link href="/" className="group flex min-w-0 items-center gap-3">
+              {/* The MARK, not the stacked lockup. The lockup contains the
+                  company name and tagline set at 14px and 8px on a 500px
+                  canvas, so scaling the whole thing to a 44px bar renders both
+                  lines at about 1px — illegible, and a decorative smudge where
+                  a name should be. The header therefore uses the generated
+                  mark crop and lets the two text lines beside it carry the
+                  name, which is also what keeps it readable at 320px.
+
+                  Two sources, swapped on `overlay`. The mark is charcoal plus
+                  deep green (#333333 on #0a5728), and the charcoal gear
+                  vanishes against the hero's stage black, so the overlay
+                  branch loads `raew-mark-inverse` — the same artwork re-pitched
+                  to near-white plus the light brand tint. Both files come out
+                  of the same master in `scripts/generate-brand-assets.ps1`, so
+                  they cannot drift apart the way a second hand-exported file
+                  would.
+
+                  `alt=""` and not a description: the two lines beside it
+                  already name the company, and this link's accessible name
+                  would otherwise be "Raj Agro Engineering Works logo Raj Agro
+                  Engineering". The mark is decorative here; the name is content. */}
               <Image
-                src="/branding/raew-logo.png"
-                alt="Raj Agro Engineering Works logo"
-                width={612}
-                height={408}
+                src={
+                  overlay ? "/branding/raew-mark-inverse.png" : "/branding/raew-mark.png"
+                }
+                alt=""
+                width={275}
+                height={242}
                 priority
                 className={`w-auto shrink-0 transition-[height] duration-300 ${scrolled ? "h-9" : "h-11"}`}
               />
               <span className="flex min-w-0 flex-col">
                 {/* The hover colour is mode-dependent for a measured reason.
-                    `--accent` (#047857) as TEXT on the stage black measures
-                    3.67:1 — fine as a 2px rule or a button ground, below the
-                    4.5:1 floor for a 16–18px bold wordmark. `--accent-on-dark`
-                    (#34d399) measures 10.48:1 on the same ground.
+                    `--accent` (#0a5728) as TEXT on the stage black measures
+                    2.23:1 — fine as a 2px rule or a button ground, well below
+                    the 4.5:1 floor for a 16–18px bold wordmark.
+                    `--accent-on-dark` (#70db99) measures 11.78:1 on the same
+                    ground.
 
                     Rebinding `--accent` on the wrapper would have fixed this
                     in one line and broken four other things: in this subtree
                     `--accent` is a button BACKGROUND carrying white label text
                     (both quote CTAs, the drawer's primary button), and pointing
-                    it at #34d399 would drop those labels to about 1.9:1. */}
+                    it at #70db99 would drop those labels to about 1.54:1.
+
+                    `font-bold`, not `font-extrabold`: Space Grotesk's variable
+                    axis stops at 700, so 800 only produced a synthetic smear.
+                    It was the last `font-extrabold` on the site. */}
                 <span
-                  className={`truncate text-sm font-extrabold leading-tight tracking-tight text-[var(--text)] transition-colors duration-200 min-[360px]:text-base sm:text-lg ${
+                  className={`truncate text-sm font-bold leading-tight tracking-tight text-[var(--text)] transition-colors duration-200 min-[360px]:text-base sm:text-lg ${
                     overlay
                       ? "group-hover:text-[var(--accent-on-dark)]"
                       : "group-hover:text-[var(--accent)]"
@@ -362,8 +392,14 @@ export default function Header({
                 >
                   Raj Agro Engineering
                 </span>
+                {/* The tagline from the artwork, in place of the old
+                    "Agricultural Machinery & Engineering" line. It is the one
+                    string on the site that is the brand's own words rather
+                    than a description of the catalogue, and it is one
+                    character-class shorter, which is the direction the
+                    truncation budget at 320px wants. */}
                 <span className="spec-label hidden truncate sm:block">
-                  Agricultural Machinery &amp; Engineering
+                  {brandTagline}
                 </span>
               </span>
             </Link>
@@ -415,7 +451,7 @@ export default function Header({
             <div className="hidden shrink-0 sm:flex">
               <Link
                 href="/quote"
-                className="inline-flex items-center gap-1 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--accent-fg)] transition-colors duration-200 hover:bg-[var(--accent-hover)]"
+                className="liquid-glass inline-flex items-center gap-1 rounded-xl bg-[var(--accent)]/90 px-5 py-2.5 text-sm font-bold text-[var(--accent-fg)] transition-colors duration-200 hover:bg-[var(--accent-hover)]"
               >
                 Get a Quote
                 <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -484,18 +520,16 @@ export default function Header({
                   chrome. `70svh` is 70% of the smallest viewport, which is the
                   only one guaranteed to be on screen.
 
-                  `data-lenis-prevent` hands wheel gestures over this element
-                  back to the browser. Lenis intercepts wheel events globally
-                  and calls preventDefault, so without this a wheel inside a
-                  nested vertical scroller scrolls the PAGE behind the open menu
-                  and the menu itself never moves. It looks like a mobile-only
-                  concern because the drawer is `lg:hidden`, but Lenis is active
-                  on any fine-pointer device — including a desktop browser
-                  resized below 1024px, which is how everyone tests this. */}
-              <div
-                data-lenis-prevent
-                className="shell max-h-[70svh] overflow-y-auto py-4"
-              >
+                  `overscroll-contain` stops a wheel gesture that reaches the end
+                  of this scroller from chaining through to the page behind the
+                  open menu. This used to be a `data-lenis-prevent` attribute,
+                  which was load-bearing for a different reason: Lenis intercepted
+                  wheel events globally and called preventDefault, so without the
+                  opt-out a wheel inside a nested scroller moved the PAGE and the
+                  menu never scrolled at all. Lenis is gone, so the browser
+                  handles the nested scroller correctly on its own and all that is
+                  left to ask for is the no-chaining behaviour. */}
+              <div className="shell max-h-[70svh] overflow-y-auto overscroll-contain py-4">
                 <ul className="space-y-1">
                   {NAV.map((group) => (
                     <li key={group.label}>

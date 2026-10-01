@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
       <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-emerald-800 text-amber-400 flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-xl bg-[var(--accent)] text-amber-400 flex items-center justify-center mx-auto">
             <Wrench className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-extrabold text-white">M/s Raj Agro Engineering</h1>
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@example.com"
-                className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-emerald-600"
+                className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
-                className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-emerald-600"
+                className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-600 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2"
+            className="w-full py-3 px-4 text-xs font-bold text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] rounded-xl transition-all shadow-md flex items-center justify-center space-x-2"
           >
             <span>{loading ? "Authenticating..." : "Sign In to Admin Dashboard"}</span>
             <ArrowRight className="w-4 h-4" />

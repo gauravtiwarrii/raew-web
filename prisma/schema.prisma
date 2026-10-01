@@ -44,7 +44,9 @@ model Product {
   features         String     // JSON formatted array of feature strings
   applications     String     // JSON formatted array of application strings
   image            String
+  imageType        String     @default("STOCK_LICENSED") // REAL_COMPANY_PHOTO, AI_GENERATED_CONCEPT, STOCK_LICENSED, USER_UPLOADED
   galleryImages    String     // JSON formatted array of secondary image URLs
+  galleryImageTypes String    @default("[]") // JSON array matching galleryImages
   brochure         String?    // URL/path to brochure PDF
   priceDisplay     String     @default("Price on Request")
   availability     String     @default("In Stock") // In Stock, Made to Order, Available
@@ -53,6 +55,8 @@ model Product {
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
   enquiries        Enquiry[]
+  @@index([active, featured, createdAt])
+  @@index([categoryId, active])
 }
 
 model Enquiry {
@@ -71,13 +75,17 @@ model Enquiry {
   source       String   @default("WEBSITE") // WEBSITE, QUOTE_FORM, WHATSAPP
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  @@index([status, createdAt])
+  @@index([productId])
 }
 
 model GalleryItem {
   id          String   @id @default(uuid())
   title       String
   category    String   // Machinery, Infrastructure, Workshop, Products, Quality
+  @@index([active, createdAt])
   imageUrl    String
+  imageType   String   @default("STOCK_LICENSED") // REAL_COMPANY_PHOTO, AI_GENERATED_CONCEPT, STOCK_LICENSED, USER_UPLOADED
   description String?
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -89,4 +97,72 @@ model SiteSetting {
   value     String
   group     String   @default("GENERAL") // GENERAL, CONTACT, SOCIAL, BUSINESS
   updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+  id            String   @id @default(uuid())
+  title         String
+  slug          String   @unique
+  @@index([published, createdAt])
+  excerpt       String?
+  content       String   // Rich text / HTML content
+  coverImage    String?
+  category      String?  // e.g., News, Updates, Agriculture, Engineering
+  tags          String?  // JSON array of tags
+  seoTitle      String?
+  seoDesc       String?
+  published     Boolean  @default(false)
+  author        String?  // Display name of author
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  @@index([active, createdAt])
+  client      String?  // Client name (nullable for confidentiality)
+  application String?  // e.g., Agriculture, Land Leveling, Irrigation
+  equipment   String?  // Equipment provided
+  description String?  // Project description
+  imageUrl    String?  // Primary project image
+  imageType   String   @default("STOCK_LICENSED") // REAL_COMPANY_PHOTO, AI_GENERATED_CONCEPT, STOCK_LICENSED, USER_UPLOADED
+  galleryUrls String?  // JSON array of additional image URLs
+  galleryImageTypes String @default("[]") // JSON array matching galleryUrls
+  completionDate String? // Date of completion
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model JobPost {
+  id           String   @id @default(uuid())
+  title        String
+  slug         String   @unique
+  @@index([active, createdAt])
+  department   String?  // e.g., Manufacturing, Sales, Admin
+  location     String
+  type         String   @default("Full-time") // Full-time, Part-time, Contract
+  description  String   // Rich text / HTML
+  requirements String?  // JSON array of requirements
+  responsibilities String? // JSON array of responsibilities
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id          String   @id @default(uuid())
+  name        String
+  email       String
+  phone       String?
+  jobId       String
+  job         JobPost? @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  resumeUrl   String?
+  message     String?
+  status      String   @default("NEW") // NEW, REVIEWED, INTERVIEW, REJECTED, HIRED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

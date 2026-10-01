@@ -1,49 +1,39 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useWebGLSupport } from "@/components/three/useWebGLSupport";
+import Image from "next/image";
 
 /**
- * HeroVisual — the isolation boundary around the hero's decorative visual, and the
- * place where the WebGL-vs-CSS decision is made.
+ * HeroVisual — the isolation boundary around the hero's visual, and the place
+ * where the photograph-vs-motif decision is made.
  *
- * This file exists to be a seam, and it is worth being explicit about why, since a
- * `dynamic()` wrapper otherwise looks like indirection for its own sake.
+ * ── THE DECISION ──────────────────────────────────────────────────────────
+ *   photoSrc supplied  → HeroPhoto        (full-bleed photograph under a scrim)
+ *   photoSrc absent    → CssEngineVisual  (abstract drafting motif, SVG + CSS)
  *
- * 1. **It keeps the visual out of the initial payload.** `ssr: false` means the
- *    geometry and the springs that drive it are fetched after hydration rather
- *    than blocking it. The hero's *text* — headline, copy, CTAs — is plain
- *    server-rendered markup and is never inside this boundary. So first paint
- *    shows the real content and the graphic arrives a beat later. That ordering is
- *    the point: the brief demands the page be impressive within five seconds, and
- *    nothing is less impressive than a hero that is blank until a canvas resolves.
+ * It is a real branch on real content, resolved on the server by
+ * `resolveHeroPhoto()`, so the motif chunk is never even downloaded once a
+ * photograph exists. Photography is the intended state; the motif is the honest
+ * stand-in for not having any yet.
  *
- * 2. **It is where the two fidelities meet.** `three` / R3F / drei are now declared
- *    dependencies, so the WebGL path is real — but it is not unconditional. See the
- *    decision table below.
+ * A WebGL branch used to live here, rendering an abstract 3D engine through
+ * react-three-fiber. It was removed along with `three`, `@react-three/fiber`,
+ * `@react-three/drei` and `@types/three`: it depicted a machine RAEW does not
+ * make, it had never been visually verified, and it cost four dependencies and a
+ * continuously-rendering PBR canvas to say less than a photograph says instantly.
+ * Do not reinstate it. If the hero needs to be more impressive, the answer is a
+ * photograph.
  *
- * 3. **The fallback is a finished composition, not a spinner.** Because
- *    `ssr: false`, `HeroVisualFallback` renders during SSR, before either chunk
- *    lands, and for anyone with JS disabled entirely. A skeleton shimmer there
- *    would be worse than the static gradient and grid below, which simply looks
- *    like the intended dark hero — quiet, and complete. `aria-hidden` throughout:
- *    every layer is decorative and the information is carried by the hero's text.
+ * ── WHY THE VISUAL IS DYNAMIC AND THE TEXT IS NOT ─────────────────────────
+ * Everything legible in the hero — headline, copy, both CTAs — is server-rendered
+ * markup outside this boundary, readable and clickable before any JavaScript
+ * runs. Only the decorative layer waits. The brief asks the page to be impressive
+ * within five seconds and nothing is less impressive than a hero that is blank
+ * until a chunk resolves, which is also why the `loading` state below is a
+ * finished composition rather than a skeleton shimmer.
  *
- * ── THE DECISION, AND WHY IT IS MADE ONCE ─────────────────────────────────
- *   useWebGLSupport() === null   → static fallback  (undecided: SSR + first frame)
- *   useWebGLSupport() === true   → EngineScene      (R3F, real geometry and PBR)
- *   useWebGLSupport() === false  → CssEngineVisual  (Framer + CSS 3D + SVG)
- *
- * The `null` state renders the static composition rather than optimistically
- * mounting `CssEngineVisual` and swapping it for WebGL a moment later. Two
- * different visuals appearing in sequence is a visible pop, and it would also
- * download both bundles on every capable machine. One decision, one mount.
- *
- * `false` is not an edge case worth neglecting — it is every reduced-motion user,
- * every machine on a software rasteriser, and every low-memory phone. See
- * `useWebGLSupport` for why each of those is excluded. The CSS visual is a
- * finished design in its own right, not a degraded one, and the 3D assembly was
- * modelled to match its silhouette so the two read as one object.
+ * `aria-hidden` throughout: every layer here is decorative. The hero's meaning is
+ * carried entirely by its text.
  */
 
 const CssEngineVisual = dynamic(() => import("./CssEngineVisual"), {
@@ -51,37 +41,96 @@ const CssEngineVisual = dynamic(() => import("./CssEngineVisual"), {
   loading: () => <HeroVisualFallback />,
 });
 
-const EngineScene = dynamic(() => import("@/components/three/EngineScene"), {
-  ssr: false,
-  loading: () => <HeroVisualFallback />,
-});
-
 /**
- * The no-JS / undecided state. Deliberately built only from the same tokens and
- * utilities the live visuals use, so it reads as the same design rather than as a
- * placeholder for it.
+ * The pre-hydration state for the motif branch. Built only from the same tokens
+ * and utilities the motif itself uses, so it reads as the same design rather than
+ * as a placeholder for it.
+ *
+ * The grid opacity here must track `CssEngineVisual`'s own full-bleed grid — they
+ * are the same layer either side of a chunk boundary, and a mismatch shows up as
+ * the background stepping brighter or darker the moment the motif hydrates.
  */
 function HeroVisualFallback() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="blueprint-grid-dark absolute inset-0 opacity-50" />
+      <div className="blueprint-grid-dark absolute inset-0 opacity-40" />
       <div className="stage-light" />
       <div className="grain" />
     </div>
   );
 }
 
-export default function HeroVisual({
-  photoSrc,
-  revealRef,
-}: {
-  photoSrc?: string;
-  /** Blueprint → material, 0..1. Only the WebGL path consumes this. */
-  revealRef?: React.RefObject<number>;
-}) {
-  const webgl = useWebGLSupport();
+/**
+ * HeroPhoto — a full-bleed photograph treated as a dark cinematic ground for
+ * type, not as a picture with words on top.
+ *
+ * ── THE SCRIM IS CONTRAST ENGINEERING, NOT STYLING ────────────────────────
+ * Hero text is `--text-inverse` and `--text-inverse-muted`. Both need to clear
+ * WCAG AA against *whatever photograph the owner supplies*, including an
+ * overexposed one — and no amount of art direction in the README can guarantee
+ * that. So the legibility floor is enforced in three deterministic stages rather
+ * than assumed:
+ *
+ *   1. `brightness-[0.55]` on the image itself caps the source. Pure white in the
+ *      photograph lands at sRGB 0.55, relative luminance ≈ 0.26. Every number
+ *      below is computed against that worst case, so the maths holds for a blown
+ *      sky as well as for a dim workshop.
+ *   2. A flat 55% scrim over the whole frame. Worst-case composite luminance
+ *      ≈ 0.45 × 0.26 ≈ 0.12 → white text ≈ 6.3:1. AA for body, AAA for large.
+ *   3. A leftward ramp reaching 90% where the type column actually sits. Combined
+ *      with the flat layer that is ≈ 0.96 opaque over the headline and CTAs, and
+ *      ≈ 0.80 out at the 62% mark where the `max-w-xl` paragraph ends — enough
+ *      for the muted token to clear 4.5:1 even against white.
+ *
+ * The ramp is also the composition: it pushes the photograph's visible weight to
+ * the right and lower frame, opposite the text, which is what stops this reading
+ * as a caption slapped over a stock image.
+ *
+ * `#070707` is `--cinema-void`, the hero section's own background. Written as
+ * `rgb(7 7 7 / …)` because these layers need alpha and the token does not carry
+ * any; if `--cinema-void` ever changes, change these with it.
+ */
+function HeroPhoto({ src }: { src: string }) {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      <Image
+        src={src}
+        alt=""
+        fill
+        priority
+        /* Full-bleed at every breakpoint, so there is no narrower candidate to
+           offer. `sizes` is still required or next/image assumes 100vw at the
+           largest device width and over-fetches. */
+        sizes="100vw"
+        /* `object-center` rather than `object-top`: the README asks for the
+           machine centred with headroom, and centre-cropping a landscape frame
+           into a tall mobile viewport keeps the subject rather than the sky. */
+        className="object-cover object-center brightness-[0.55]"
+      />
 
-  if (webgl === null) return <HeroVisualFallback />;
-  if (webgl) return <EngineScene revealRef={revealRef} />;
-  return <CssEngineVisual photoSrc={photoSrc} />;
+      {/* Stage 2 — flat floor. */}
+      <div className="absolute inset-0 bg-[rgb(7_7_7_/_0.55)]" />
+
+      {/* Stage 3 — the type-column ramp, plus a bottom ramp so the scroll cue and
+          the section edge sit on solid ground instead of on picture detail. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: [
+            "linear-gradient(90deg, rgb(7 7 7 / 0.90) 0%, rgb(7 7 7 / 0.78) 30%, rgb(7 7 7 / 0.30) 62%, rgb(7 7 7 / 0) 88%)",
+            "linear-gradient(to top, rgb(7 7 7 / 0.85) 0%, rgb(7 7 7 / 0) 32%)",
+          ].join(", "),
+        }}
+      />
+
+      {/* Grain last. These are wide, low-contrast gradients — exactly the case
+          where 8-bit panels show visible banding — and the grain breaks it up. */}
+      <div className="grain" />
+    </div>
+  );
+}
+
+export default function HeroVisual({ photoSrc }: { photoSrc?: string }) {
+  if (photoSrc) return <HeroPhoto src={photoSrc} />;
+  return <CssEngineVisual />;
 }

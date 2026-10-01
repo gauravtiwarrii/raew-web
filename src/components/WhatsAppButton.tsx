@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { MessageSquare } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 interface WhatsAppButtonProps {
@@ -25,18 +24,15 @@ export default function WhatsAppButton({ phone }: WhatsAppButtonProps) {
   const waUrl = getWhatsAppLink(undefined, undefined, phone);
 
   return (
-    <motion.a
+    <a
       href={waUrl}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.8, duration: 0.3, ease: [0.2, 0, 0.2, 1] }}
-      whileTap={{ scale: 0.97 }}
-      className="fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-lg bg-[#128C7E] px-4 py-3 text-sm font-bold text-white shadow-[var(--shadow-raised)] transition-colors duration-200 hover:bg-[#0f7268] lg:inline-flex"
+      className="whatsapp-float"
+      aria-label="Connect with RAEW on WhatsApp"
     >
-      <MessageSquare className="h-5 w-5" aria-hidden="true" />
-      Enquire on WhatsApp
-    </motion.a>
+      <MessageCircle className="whatsapp-icon" aria-hidden="true" />
+      <span>Chat on WhatsApp</span>
+    </a>
   );
 }

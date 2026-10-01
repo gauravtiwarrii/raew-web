@@ -71,8 +71,8 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
       </div>
 
       {success && (
-        <div className="p-4 bg-emerald-950/80 border border-emerald-800 rounded-xl flex items-center space-x-3 text-xs text-emerald-300">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+        <div className="p-4 bg-[var(--accent)]/30 border border-[var(--accent-bright)]/60 rounded-xl flex items-center space-x-3 text-xs text-[var(--accent-on-dark-strong)]">
+          <CheckCircle2 className="w-5 h-5 text-[var(--accent-on-dark)] shrink-0" />
           <span>Site configuration settings updated successfully! All public pages will now display these values.</span>
         </div>
       )}
@@ -99,7 +99,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.BUSINESS_NAME}
                 onChange={(e) => handleChange("BUSINESS_NAME", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -109,7 +109,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.TAGLINE}
                 onChange={(e) => handleChange("TAGLINE", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
 
         {/* Contact Numbers & WhatsApp */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-          <div className="flex items-center space-x-2 text-emerald-400 border-b border-slate-800 pb-3">
+          <div className="flex items-center space-x-2 text-[var(--accent-on-dark)] border-b border-slate-800 pb-3">
             <Phone className="w-4 h-4" />
             <h3 className="font-bold text-sm text-white">Contact & WhatsApp Integration</h3>
           </div>
@@ -129,7 +129,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.PHONE_PRIMARY}
                 onChange={(e) => handleChange("PHONE_PRIMARY", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -139,7 +139,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.PHONE_SECONDARY}
                 onChange={(e) => handleChange("PHONE_SECONDARY", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -150,7 +150,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 value={formData.WHATSAPP_NUMBER}
                 onChange={(e) => handleChange("WHATSAPP_NUMBER", e.target.value)}
                 placeholder="91XXXXXXXXXX"
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-emerald-400 font-mono focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-[var(--accent-on-dark)] font-mono focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.EMAIL_PRIMARY}
                 onChange={(e) => handleChange("EMAIL_PRIMARY", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -172,7 +172,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.GSTIN}
                 onChange={(e) => handleChange("GSTIN", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -182,7 +182,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.EMAIL_SALES}
                 onChange={(e) => handleChange("EMAIL_SALES", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                 type="text"
                 value={formData.ADDRESS}
                 onChange={(e) => handleChange("ADDRESS", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
               />
             </div>
 
@@ -213,7 +213,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                   type="text"
                   value={formData.BUSINESS_HOURS}
                   onChange={(e) => handleChange("BUSINESS_HOURS", e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -223,7 +223,7 @@ export default function SettingsManager({ initialConfig }: SettingsManagerProps)
                   type="text"
                   value={formData.GOOGLE_MAPS_URL}
                   onChange={(e) => handleChange("GOOGLE_MAPS_URL", e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
             </div>

@@ -237,7 +237,16 @@ export default function GalleryClient({ initialItems }: GalleryClientProps) {
                           className="absolute inset-0 flex items-center justify-center bg-[rgb(8_9_11_/_0.45)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
                           aria-hidden="true"
                         >
-                          <span className="inline-flex h-11 w-11 items-center justify-center border border-white/40 bg-white/10 backdrop-blur-sm">
+                          {/* A bordered plate, not a frosted one. This carried
+                              `backdrop-blur-sm`, which was doing no visible work:
+                              it sits on top of a 45%-black scrim, so there is
+                              almost no contrast left in the backdrop for a blur
+                              to soften — while still forcing a separate
+                              compositing layer on every tile in the grid. The
+                              fill is raised from white/10 to white/14 so the
+                              plate reads on its own, and the square edge matches
+                              the drafting frames used elsewhere on the site. */}
+                          <span className="inline-flex h-11 w-11 items-center justify-center border border-white/40 bg-white/[0.14]">
                             <Maximize2 className="h-4 w-4 text-white" />
                           </span>
                         </span>

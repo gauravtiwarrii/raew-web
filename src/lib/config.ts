@@ -1,6 +1,13 @@
 export interface SiteConfig {
   businessName: string;
   tagline: string;
+  /**
+   * The line locked up beneath the wordmark in the brand artwork
+   * ("Engineering a Greener Tomorrow"). Shown beside the mark in the header
+   * and the footer, where it is the only promise the site makes in the
+   * brand's own words rather than a description of what the company makes.
+   */
+  brandTagline: string;
   phonePrimary: string;
   phoneSecondary: string;
   whatsappNumber: string;
@@ -19,6 +26,7 @@ export interface SiteConfig {
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
   businessName: process.env.NEXT_PUBLIC_BUSINESS_NAME || "M/s Raj Agro Engineering Works",
   tagline: "Precision Agricultural Machinery & Heavy Custom Engineering Solutions",
+  brandTagline: "Engineering a Greener Tomorrow",
   phonePrimary: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+91 7651861335",
   phoneSecondary: "[REPLACE WITH SECONDARY PHONE]",
   whatsappNumber: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "917651861335",

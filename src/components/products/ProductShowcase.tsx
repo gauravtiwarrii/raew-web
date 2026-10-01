@@ -78,7 +78,6 @@ export default function ProductShowcase({ items, totalProductCount }: ProductSho
 
             <Link
               href="/products"
-              data-cursor="Browse"
               className="inline-flex shrink-0 items-center gap-1.5 border border-[rgb(255_255_255/0.22)] px-5 py-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-inverse)] transition-colors duration-200 hover:border-[var(--accent-on-dark)] hover:text-[var(--accent-on-dark)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
             >
               View all {totalProductCount} machines

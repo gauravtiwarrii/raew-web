@@ -9,6 +9,9 @@ import {
   Image as ImageIcon,
   Settings,
   ExternalLink,
+  Newspaper,
+  FolderKanban,
+  Briefcase,
 } from "lucide-react";
 import AdminLogoutButton from "./AdminLogoutButton";
 
@@ -16,6 +19,32 @@ export const metadata = {
   title: "Admin Dashboard | M/s Raj Agro Engineering Works",
 };
 
+/* ── The admin's accent, re-anchored on the brand ──
+   This dashboard keeps its own palette — slate panels, amber iconography —
+   and that is untouched here. What was wrong is that its *green* was
+   Tailwind's stock emerald, which after the brand re-pitch became a green
+   appearing nowhere else on the site: the logo's ink is #0a5728 and every
+   public accent is a member of that family. The accent roles below were
+   re-pointed at the real tiers by role, not by swapping one hex for another:
+
+     focus:border-[var(--accent-bright)]   #199055 — a focus ring is non-text
+                                           UI, so it wants the graphics tier.
+                                           Clears 3:1 on these dark panels
+                                           (4.95:1 on #070707).
+     text-[var(--accent-on-dark)]          #70db99 — numerals and status
+                                           icons, 11.78:1 on the stage black.
+     text-[var(--accent-on-dark-strong)]   #a7ecc4 — the loudest tint, for the
+                                           one link or badge that must lead.
+     bg-[var(--accent)]                    #0a5728 — filled buttons and the
+                                           badge behind the amber login icon,
+                                           carrying white at 8.73:1. This is
+                                           literally the public CTA's recipe.
+     bg-[var(--accent)]/20 …               brand ink at low alpha for status
+     border-[var(--accent-bright)]/60      chips, so a chip reads as a chip
+                                           rather than as another slate panel.
+
+   Amber stays amber: it is this dashboard's own signal colour, it never
+   appears in the public site, and re-pitching it was not part of the change. */
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getAuthSession();
 
@@ -34,12 +63,24 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="space-y-6">
           {/* Admin Header */}
           <div className="flex items-center space-x-3 px-2">
+            {/* The inverse MARK, not the lockup, and not the light-ground file.
+
+                Two separate mistakes are being avoided here. First, the ground:
+                this sidebar is `bg-slate-900`, and `raew-logo.png` is pitched for
+                light grounds — its wordmark is the charcoal #333333, which on
+                slate is effectively invisible. `raew-mark-inverse.png` is the
+                same artwork re-pitched to near-white plus the light brand tint,
+                generated from the same master as the header's copy.
+
+                Second, the crop: at a 40px row the stacked lockup renders its
+                own name at about one pixel, so the mark is paired with live text
+                instead — the same decision the site header made. */}
             <Image
-              src="/branding/raew-logo.png"
-              alt="Raj Agro Engineering Works logo"
-              width={180}
-              height={90}
-              className="h-10 w-auto rounded-md"
+              src="/branding/raew-mark-inverse.png"
+              alt=""
+              width={275}
+              height={242}
+              className="h-10 w-auto shrink-0"
             />
             <div>
               <h2 className="font-bold text-sm text-white">Raj Agro Admin</h2>
@@ -87,6 +128,30 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             >
               <ImageIcon className="w-4 h-4 text-amber-400" />
               <span>Gallery Management</span>
+            </Link>
+
+            <Link
+              href="/admin/blog"
+              className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              <Newspaper className="w-4 h-4 text-amber-400" />
+              <span>Blog &amp; News</span>
+            </Link>
+
+            <Link
+              href="/admin/projects"
+              className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              <FolderKanban className="w-4 h-4 text-amber-400" />
+              <span>Projects</span>
+            </Link>
+
+            <Link
+              href="/admin/careers"
+              className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              <Briefcase className="w-4 h-4 text-amber-400" />
+              <span>Careers</span>
             </Link>
 
             <Link

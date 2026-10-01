@@ -86,22 +86,13 @@ export default async function CategoriesPage() {
                   className="group flex flex-col justify-between bg-[var(--surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
                 >
                   <div className="relative aspect-16/9 overflow-hidden bg-[var(--surface-2)]">
-                    {isAuthenticImage(cat.image) ? (
-                      <Image
-                        src={cat.image as string}
-                        alt=""
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <div
-                        className="blueprint-grid-dark absolute inset-0 flex items-center justify-center bg-[var(--surface-inverse)]"
-                        aria-hidden="true"
-                      >
-                        <Layers className="h-9 w-9 text-[var(--accent-on-dark)]" />
-                      </div>
-                    )}
+                    <Image
+                      src={isAuthenticImage(cat.image) ? cat.image as string : "/visuals/machine.jpg"}
+                      alt={`${cat.name} agricultural machinery`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
                     <span className="chip-dark absolute left-3 top-3">
                       {/* "1 Models Available" was the old output. */}
                       {count === 0

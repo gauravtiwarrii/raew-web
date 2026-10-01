@@ -86,6 +86,53 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## 🎨 Brand Assets & Logo Replacement
+
+The whole identity is generated from **one master file**:
+
+```
+scripts/brand/raew-logo-master.png      # 500x500, transparent, the full stacked lockup
+```
+
+Regenerate every asset from it:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts\generate-brand-assets.ps1
+```
+
+This writes:
+
+| Output | Purpose |
+| --- | --- |
+| `public/branding/raew-logo.png` | Full stacked lockup, brand colours — for light grounds (schema.org `logo`, print, invoices) |
+| `public/branding/raew-logo-inverse.png` | Full lockup re-pitched for dark grounds (social card) |
+| `public/branding/raew-mark.png` | The R/gear/leaf mark alone — header on light pages |
+| `public/branding/raew-mark-inverse.png` | The mark for dark grounds — header over the hero, footer |
+| `src/app/icon.png` | 512px app tile → `<link rel="icon">` |
+| `src/app/apple-icon.png` | 180px app tile → `apple-touch-icon` |
+| `src/app/favicon.ico` | 48px PNG-in-ICO, so `/favicon.ico` resolves |
+
+The header and footer use the **mark**, never the stacked lockup: the lockup sets
+the company name at 14px on a 500px canvas, so scaling it into a 44px bar renders
+that name at about 1px.
+
+### Brand colours
+
+Both are sampled from the artwork, not chosen:
+
+| Token | Value | Used for |
+| --- | --- | --- |
+| Brand green | `#0a5728` | `--accent` (buttons, rules, eyebrows) and the `agri-*` scale |
+| Brand charcoal | `#333333` | The mark's gear; the neutral end of the identity |
+
+Every green in `src/app/globals.css` is built outward from `#0a5728`, so the
+interface and the logo cannot drift apart. If the logo changes, update
+`globals.css` (`--color-agri-*`, `--accent*`, `--focus*`, `--accent-highlight`)
+in the same commit as the artwork — the contrast ratios recorded inline in that
+file were measured against these values.
+
+---
+
 ## 🏭 Production Build & Deployment
 
 To generate a production build:

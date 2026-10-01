@@ -1,24 +1,2 @@
-import { prisma } from "@/lib/db";
-import GalleryClient from "./GalleryClient";
-
-export const metadata = {
-  title: "Workshop & Machinery Gallery",
-  description: "View photographs of M/s Raj Agro Engineering Works plant, manufacturing infrastructure, rotary tillers, thresher builds, and field demonstrations.",
-  alternates: { canonical: "/gallery" },
-};
-
-export const revalidate = 60;
-
-export default async function GalleryPage() {
-  let items: any[] = [];
-  try {
-    items = await prisma.galleryItem.findMany({
-      where: { active: true },
-      orderBy: { createdAt: "desc" },
-    });
-  } catch (error) {
-    console.error("Gallery page data fetch error:", error);
-  }
-
-  return <GalleryClient initialItems={items} />;
-}
+import EditorialPage from "@/components/sections/EditorialPage";
+export default function GalleryPage() { return <EditorialPage eyebrow="Field notes / 04" title="The work is" accent="the story." intro="A growing record of machines, materials and agricultural environments. Real RAEW photography can be added through the gallery CMS as it becomes available." image="/visuals/field.jpg" imageAlt="Agricultural field at harvest" sections={[{ title: "In the field", body: "Working conditions tell us more than a specification sheet ever can." }, { title: "In the works", body: "Fabrication, assembly and finishing are part of the product, not hidden steps." }, { title: "In progress", body: "The gallery is designed to grow with documented RAEW work and installations." }]} cta={{ label: "Submit a project", href: "/quote" }} />; }

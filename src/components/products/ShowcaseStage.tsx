@@ -9,9 +9,8 @@ import {
   useSpring,
 } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
-import MagneticLink from "@/components/motion/MagneticLink";
-import { scrollToY } from "@/lib/smooth-scroll";
 import ShowcaseFrame from "./ShowcaseFrame";
 import type { ShowcaseItem } from "./showcase-types";
 
@@ -82,11 +81,17 @@ export default function ShowcaseStage({ items }: { items: ShowcaseItem[] }) {
      setting index state directly (which would then be overwritten by the very
      next scroll event).
 
-     Routed through `scrollToY` rather than `window.scrollTo`: with Lenis live,
-     a native smooth scroll and Lenis's interpolation would both be writing
-     scroll position on the same frames, and the two fight — the jump either
-     stutters or snaps instantly. `scrollToY` hands off to `lenis.scrollTo` when
-     Lenis is running and falls back to `window.scrollTo` when it is not. */
+     This used to go through a `scrollToY` helper that handed off to
+     `lenis.scrollTo`, because a native smooth scroll and Lenis's interpolation
+     would both be writing scroll position on the same frames and the two fought
+     — the jump either stuttered or snapped instantly. Lenis is gone, so the
+     native call is now unambiguous and the helper with it.
+
+     `behavior` is switched rather than the whole call, because a reduced-motion
+     user still needs the navigation to happen; they just need it to happen
+     without the animated traversal. Note this is a scroll to a *computed offset*,
+     not to an element, so `scroll-padding-top` does not apply and none needs
+     subtracting — the sticky pane is already positioned to clear the header. */
   const goTo = useCallback(
     (index: number) => {
       const track = trackRef.current;
@@ -94,8 +99,9 @@ export default function ShowcaseStage({ items }: { items: ShowcaseItem[] }) {
       const trackTop = track.getBoundingClientRect().top + window.scrollY;
       const travel = track.offsetHeight - window.innerHeight;
       if (travel <= 0) return;
-      scrollToY(trackTop + travel * ((index + 0.5) / items.length), {
-        immediate: Boolean(prefersReducedMotion),
+      window.scrollTo({
+        top: trackTop + travel * ((index + 0.5) / items.length),
+        behavior: prefersReducedMotion ? "auto" : "smooth",
       });
     },
     [items.length, prefersReducedMotion]
@@ -182,9 +188,8 @@ export default function ShowcaseStage({ items }: { items: ShowcaseItem[] }) {
                   </p>
 
                   <div className="mt-7">
-                    <MagneticLink
+                    <Link
                       href={`/products/${current.slug}`}
-                      cursorLabel="View"
                       className="group inline-flex items-center gap-2 border border-[rgb(255_255_255/0.22)] px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-inverse)] transition-colors duration-200 hover:border-[var(--accent-on-dark)] hover:text-[var(--accent-on-dark)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
                     >
                       Full specifications
@@ -192,7 +197,7 @@ export default function ShowcaseStage({ items }: { items: ShowcaseItem[] }) {
                         className="h-3.5 w-3.5 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1"
                         aria-hidden="true"
                       />
-                    </MagneticLink>
+                    </Link>
                   </div>
                 </div>
 

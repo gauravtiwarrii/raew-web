@@ -151,7 +151,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                 <td className="p-3.5 text-center font-bold text-amber-400">{cat.sortOrder}</td>
                 <td className="p-3.5 text-center">
                   {cat.active ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 mx-auto" />
+                    <CheckCircle2 className="w-4 h-4 text-[var(--accent-on-dark)] mx-auto" />
                   ) : (
                     <XCircle className="w-4 h-4 text-red-500 mx-auto" />
                   )}
@@ -198,7 +198,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                   required
                   value={formData.name}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -209,7 +209,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                   required
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -219,7 +219,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                   rows={2}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -229,7 +229,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                   type="url"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                 />
               </div>
 
@@ -240,7 +240,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                     type="number"
                     value={formData.sortOrder}
                     onChange={(e) => setFormData({ ...formData, sortOrder: Number(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-emerald-600"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-[var(--accent-bright)]"
                   />
                 </div>
 
@@ -250,7 +250,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                       type="checkbox"
                       checked={formData.active}
                       onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                      className="rounded text-emerald-600"
+                      className="rounded accent-[var(--accent-bright)]"
                     />
                     <span>Active Category</span>
                   </label>

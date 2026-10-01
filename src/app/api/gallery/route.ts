@@ -6,6 +6,7 @@ export async function GET() {
   try {
     const items = await prisma.galleryItem.findMany({
       orderBy: { createdAt: "desc" },
+      take: 100,
     });
     return NextResponse.json(items);
   } catch (error) {
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { title, category, imageUrl, description, active } = body;
+    const { title, category, imageUrl, imageType, description, active } = body;
 
     if (!title || !imageUrl) {
       return NextResponse.json({ error: "Title and Image URL are required" }, { status: 400 });
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest) {
         title,
         category: category || "General",
         imageUrl,
+        imageType: imageType || "STOCK_LICENSED",
         description: description || null,
         active: active !== undefined ? active : true,
       },

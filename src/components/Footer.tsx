@@ -51,18 +51,21 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
   const whatsAppHref = getWhatsAppLink(undefined, undefined, config.whatsappNumber);
   const telHref = `tel:${cleanPhone.replace(/[^\d+]/g, "")}`;
 
-  /* The rule was `border-[var(--accent)]`. #047857 against #070707 measures
-     3.67:1 — which does clear the 3:1 floor for a non-text graphic, so this
-     was not a failure. It was a weighting problem: at 2px, 3.67:1 reads as a
-     smudge rather than a mark, and this rule's job is to be the one thing
-     that anchors four column headings down the page. `--accent-on-dark`
-     (#34d399) measures 10.48:1 on the same ground and actually holds.
+  /* The rule was `border-[var(--accent)]`. #0a5728 against #070707 measures
+     2.23:1 — which is under the 3:1 floor for a non-text graphic, so this
+     WAS a failure once the accent moved onto the mark's own green. It is
+     also a weighting problem on top of that: at 2px, a ratio that low reads
+     as a smudge rather than a mark, and this rule's job is to be the one
+     thing that anchors four column headings down the page.
+     `--accent-on-dark` (#70db99) measures 11.78:1 on the same ground and
+     actually holds.
 
      (An earlier note here claimed 1.35:1. That figure was wrong and is
      recorded as wrong on purpose: it was inconsistent with the two numbers
-     beside it — white on #047857 is 5.48:1 and white on #070707 is 19.25:1,
-     which forces the accent-on-void ratio to about 19.25 / 5.48 ≈ 3.5. If a
-     contrast figure in this codebase does not reconcile with its neighbours,
+     beside it — white on the accent is 8.73:1 and white on #070707 is
+     19.25:1, which forces the accent-on-void ratio to about
+     19.25 / 8.73 ≈ 2.2, and the measured value is 2.23:1. If a contrast
+     figure in this codebase does not reconcile with its neighbours,
      re-measure it before acting on it.) */
   const columnHeading =
     "mb-5 border-l-2 border-[var(--accent-on-dark)] pl-3 text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-inverse)]";
@@ -75,19 +78,32 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
       />
 
       {/* Main footer content */}
-      <div className="shell relative grid grid-cols-1 gap-10 py-16 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
+      <div className="shell relative grid grid-cols-1 gap-10 py-16 md:grid-cols-2 lg:grid-cols-6 lg:gap-12">
         {/* Brand column */}
         <div className="space-y-5 lg:col-span-2">
           <div className="flex items-center gap-3">
+            {/* The inverse mark. The footer sits on --cinema-void (#070707),
+                where the artwork's charcoal gear is invisible, so this is the
+                version re-pitched to near-white plus the light brand tint —
+                generated from the same master as the header mark by
+                `scripts/generate-brand-assets.ps1`.
+
+                `alt=""` because the two lines beside it already carry the
+                company name; announcing the mark as well would say it twice. */}
             <Image
-              src="/branding/raew-logo.png"
-              alt="Raj Agro Engineering Works logo"
-              width={260}
-              height={130}
-              className="h-11 w-auto"
+              src="/branding/raew-mark-inverse.png"
+              alt=""
+              width={275}
+              height={242}
+              className="h-11 w-auto shrink-0"
             />
-            <span className="text-xl font-bold tracking-tight text-[var(--text-inverse)]">
-              Raj Agro Engineering
+            <span className="flex min-w-0 flex-col">
+              <span className="text-xl font-bold tracking-tight text-[var(--text-inverse)]">
+                Raj Agro Engineering
+              </span>
+              {/* The brand's own line, at micro-type. It is the one place in
+                  the footer where the company speaks rather than enumerates. */}
+              <span className="spec-label mt-1">{config.brandTagline}</span>
             </span>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-[var(--text-inverse-muted)]">
@@ -125,9 +141,11 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
               { href: "/products", label: "Product Catalog" },
               { href: "/categories", label: "Machinery Categories" },
               { href: "/services", label: "Services" },
+              { href: "/manufacturing", label: "Manufacturing" },
+              { href: "/projects", label: "Projects" },
               { href: "/gallery", label: "Gallery" },
-              { href: "/contact", label: "Contact Us" },
-              { href: "/quote", label: "Request a Quote" },
+              { href: "/blog", label: "News & Insights" },
+              { href: "/careers", label: "Careers" },
             ].map((link) => (
               <li key={link.href}>
                 <Link
@@ -141,17 +159,45 @@ export default function Footer({ config = DEFAULT_SITE_CONFIG }: FooterProps) {
           </ul>
         </div>
 
-        {/* Catalog areas */}
+        {/* Customer actions */}
         <div>
-          <h2 className={columnHeading}>Catalog Areas</h2>
-          <ul className="space-y-3 text-sm text-[var(--text-inverse-muted)]">
-            <li>Agricultural Machinery</li>
-            <li>Farm Equipment</li>
-            <li>Agricultural Implements</li>
-            <li>Engineering Equipment</li>
-            <li>Fabrication Products</li>
-            <li>Custom Machinery</li>
-            <li>Spare Parts</li>
+          <h2 className={columnHeading}>Customer</h2>
+          <ul className="space-y-3 text-sm">
+            {[
+              { href: "/quote", label: "Request a Quote" },
+              { href: "/contact", label: "Contact Us" },
+              { href: "/after-sales", label: "After-Sales Support" },
+              { href: "/field-performance", label: "Field Support" },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-[var(--text-inverse-muted)] transition-colors duration-150 hover:text-[var(--text-inverse)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Legal */}
+        <div>
+          <h2 className={columnHeading}>Legal</h2>
+          <ul className="space-y-3 text-sm">
+            {[
+              { href: "/privacy", label: "Privacy Policy" },
+              { href: "/terms", label: "Terms & Conditions" },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-[var(--text-inverse-muted)] transition-colors duration-150 hover:text-[var(--text-inverse)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-inverse)]"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 

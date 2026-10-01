@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { lockScroll, unlockScroll } from "@/lib/smooth-scroll";
 
 /**
  * useFocusTrap — keeps Tab focus inside `ref` while `active`.
@@ -69,15 +68,16 @@ export function useFocusTrap<T extends HTMLElement>(
  * Compensates for the disappearing scrollbar so the layout underneath does not
  * jump sideways when the lock engages.
  *
- * Two mechanisms, both required:
- *   • `body.style.overflow = "hidden"` is the native lock, and is what holds on
- *     touch devices, under reduced motion, and any time Lenis is not running.
- *   • `lockScroll()` suspends Lenis. Without it the native lock is not enough:
- *     Lenis reads wheel events itself and keeps integrating a target scroll
- *     position even while the document cannot move, so on close it would snap to
- *     wherever that phantom target had drifted — potentially the whole length of
- *     however long the modal was open with a finger on the wheel.
- * `lockScroll` no-ops when Lenis is absent, so this is safe unconditionally.
+ * `body.style.overflow = "hidden"` is the whole mechanism now, and it is enough.
+ * There used to be a second half: a `lockScroll()` call that suspended Lenis,
+ * which was genuinely required at the time — Lenis reads wheel events itself and
+ * kept integrating a target scroll position even while the document could not
+ * move, so on close it snapped to wherever that phantom target had drifted,
+ * potentially the whole length of however long the modal was open with a finger on
+ * the wheel. Removing Lenis removed the phantom target, and with it the need for
+ * the second lock. This is the concrete cost that a smooth-scroll library imposes
+ * on the rest of an application: every native scroll behaviour has to be
+ * re-implemented against it.
  */
 export function useScrollLock(active: boolean) {
   useEffect(() => {
@@ -91,12 +91,10 @@ export function useScrollLock(active: boolean) {
     if (scrollbarWidth > 0) {
       body.style.paddingRight = `${scrollbarWidth}px`;
     }
-    lockScroll();
 
     return () => {
       body.style.overflow = previousOverflow;
       body.style.paddingRight = previousPaddingRight;
-      unlockScroll();
     };
   }, [active]);
 }
